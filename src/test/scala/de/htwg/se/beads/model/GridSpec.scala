@@ -4,6 +4,7 @@ import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers
 import Enums.Stitch
 import Enums.DefaultColors
+import scala.io.AnsiColor._
 
 class GridSpec extends AnyWordSpec with Matchers {
 
@@ -168,15 +169,18 @@ class GridSpec extends AnyWordSpec with Matchers {
       .setBeadColor(0, 0, red)
       .setBeadColor(1, 0, red)
     val expectedString = "\n" +
-      "------------------------------------------------------------------------" + "\n" +
-      "| Color(255.0,0.0,0.0) || Color(255.0,255.0,255.0) || Color(255.0,255.0,255.0) |" + "\n" +
-      "------------------------------------------------------------------------" + "\n" +
-      "| Color(255.0,0.0,0.0) || Color(255.0,255.0,255.0) || Color(255.0,255.0,255.0) |" + "\n" +
-      "------------------------------------------------------------------------"
+      "---------------" + "\n" +
+      "|   |" + "|   |" + "|   |" + "\n" +
+      "---------------" + "\n" +
+      "|   |" + "|   |" + "|   |" + "\n" +
+      "---------------"
       + "\n"
 
     "have a string representation with the correct format" in {
-      updatedGrid.toString() shouldBe expectedString
+      updatedGrid.toString.replaceAll(
+        "\u001B\\[[;\\d]*m",
+        ""
+      ) shouldBe expectedString
     }
   }
 

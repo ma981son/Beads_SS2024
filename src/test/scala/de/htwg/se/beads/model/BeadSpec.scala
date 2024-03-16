@@ -4,6 +4,7 @@ import org.scalatest.wordspec.AnyWordSpec
 
 import org.scalatest.matchers.should.Matchers
 import Enums.DefaultColors
+import scala.io.AnsiColor._
 
 class BeadSpec extends AnyWordSpec with Matchers {
 
@@ -81,10 +82,13 @@ class BeadSpec extends AnyWordSpec with Matchers {
 
     "converted to a string" should {
 
-      val expectedString = "| Color(255.0,255.0,255.0) |"
+      val expectedString = "|   |"
 
       "have a string representation with the correct format" in {
-        bead.toString shouldBe expectedString
+        bead.toString.replaceAll(
+          "\u001B\\[[;\\d]*m",
+          ""
+        ) shouldBe expectedString
       }
     }
 

@@ -15,7 +15,7 @@ class MatrixSpec extends AnyWordSpec with Matchers {
     val bead = Bead()
 
     val matrix =
-      new Matrix(row = 1, col = 1, startColor = white, stitch = Stitch.Square)
+      new Matrix(row = 1, col = 1)
 
     "created with row, column, a starting color and a stitch" should {
 
@@ -61,6 +61,26 @@ class MatrixSpec extends AnyWordSpec with Matchers {
 
       "contain beads with the correct starting color" in {
         matrix.allBeads.foreach(bead => bead.beadColor should be(white))
+      }
+    }
+
+    "changing its size" should {
+
+      "return a copy of the matrix in the correct size" in {
+        val newMatrix = matrix.changeSize(4, 4)
+        newMatrix.size should be(4, 4)
+      }
+
+      "throw an exception if the dimentions are invalid" in {
+        an[IllegalArgumentException] should be thrownBy {
+          matrix.changeSize(-1, 0)
+        }
+        an[IllegalArgumentException] should be thrownBy {
+          matrix.changeSize(0, -1)
+        }
+        an[IllegalArgumentException] should be thrownBy {
+          matrix.changeSize(0, 0)
+        }
       }
     }
 

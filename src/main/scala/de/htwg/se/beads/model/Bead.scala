@@ -1,5 +1,6 @@
 package de.htwg.se.beads.model
 import de.htwg.se.beads.model.Enums.DefaultColors
+import scala.io.AnsiColor.RESET
 
 final case class Bead(
     beadCoord: Coord = Coord(0, 0),
@@ -21,7 +22,7 @@ final case class Bead(
   }
 
   override def toString: String = {
-    "| " + beadColor + " |"
+    s"|${rgbToAnsi.colors.get(beadColor).get}   ${RESET}|"
   }
 
 }

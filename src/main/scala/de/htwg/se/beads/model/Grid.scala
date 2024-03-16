@@ -54,16 +54,11 @@ final case class Grid(beads: Matrix) {
   override def toString: String = {
     val regex = "x".r
     val line = "x" * size_cols + "\n"
-    var lineseparator =
-      ("-" * beads.bead(0, 0).toString.size) * size_cols + "\n"
-    var box = "\n" + (lineseparator + ((line + lineseparator) * size_rows))
+    var lineseparator = ("-" * 5) * size_cols + "\n"
+    var box = "\n" + (lineseparator + (line + lineseparator) * size_rows)
 
     for (row <- 0 until size_rows) {
       for (col <- 0 until size_cols) {
-        lineseparator = ("-" * bead(
-          size_rows - 1,
-          size_cols - 1
-        ).toString.size) * size_cols + "\n"
         box = regex.replaceFirstIn(box, bead(row, col).toString)
       }
     }
