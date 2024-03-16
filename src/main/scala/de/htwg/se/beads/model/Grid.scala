@@ -1,27 +1,48 @@
-package de.htwg.se.model
+package de.htwg.se.beads.model
 
-import de.htwg.se.model.BeadVector
+import de.htwg.se.beads.model.BeadVector
+import de.htwg.se.beads.model.Enums.Stitch
+import de.htwg.se.beads.model.Enums.DefaultColors
 final case class Grid(beads: Matrix) {
-  def this(length: Int, width: Int) = this(
+
+  def this(
+      length: Int,
+      width: Int,
+      startColor: Color = DefaultColors.NoColor.color,
+      stitch: Stitch = Stitch.Square
+  ) = this(
     new Matrix(
       length,
       width,
-      Bead(Coord(0, 0), Stitch.Square, Color(255, 255, 255))
+      startColor,
+      stitch
     )
   )
 
   val size_rows: Int = beads.size._1
   val size_cols: Int = beads.size._2
 
+  def changeSize(row: Int, col: Int): Grid = {
+    copy(beads = beads.changeSize(row, col))
+  }
+
+  val stitch: Stitch = beads.stitch
+
+  def changeStitch(stitch: Stitch): Grid = {
+    copy(beads.changeStitch(stitch))
+  }
+
+  def allBeads(): Seq[Bead] = beads.allBeads
+
   def bead(row: Int, col: Int): Bead = beads.bead(row, col)
 
-  def setColor(row: Int, col: Int, color: Color): Grid = {
+  def setBeadColor(row: Int, col: Int, color: Color): Grid = {
     val oldbead = bead(row, col)
     copy(
       beads.replaceBead(
         row,
         col,
-        Bead(oldbead.beadCoord, oldbead.beadStitch, color)
+        Bead(oldbead.beadCoord, color)
       )
     )
   }

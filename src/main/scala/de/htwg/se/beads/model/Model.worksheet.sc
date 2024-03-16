@@ -114,11 +114,15 @@ case class Matrix(matrix: Vector[Vector[Bead]]) {
   def bead(row: Int, col: Int): Bead = matrix(row)(col)
 
   def fill(filling: Bead): Matrix = copy(
-    Vector.tabulate(this.size._1, this.size._2) { (row, col) =>
-      filling
-    }
+    Vector
+      .tabulate(this.size._1, this.size._2) { (row, col) =>
+        filling
+      }
   )
 }
+
+val matrixBead = Bead(Coord(0, 0), Stitch.Brick, Color(255, 255, 255))
+val matrix = new Matrix(3, 3, matrixBead)
 
 case class Grid(beads: Matrix) {
   def this(length: Int, width: Int) = this(

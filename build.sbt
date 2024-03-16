@@ -5,5 +5,6 @@ lazy val root = project
   .settings(
     name := "Beads_SA",
     version := "0.1.0-SNAPSHOT",
-    libraryDependencies += "org.scalameta" %% "munit" % "0.7.29" % Test
+    libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.10" % "test",
+    coverageEnabled := true
   )
