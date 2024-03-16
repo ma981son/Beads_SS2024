@@ -1,8 +1,7 @@
 package de.htwg.se.beads.model
 
 import de.htwg.se.beads.model.BeadVector
-import de.htwg.se.beads.model.Enums.Stitch
-import de.htwg.se.beads.model.Enums.DefaultColors
+import de.htwg.se.beads.util.Enums.*
 final case class Grid(beads: Matrix) {
 
   def this(

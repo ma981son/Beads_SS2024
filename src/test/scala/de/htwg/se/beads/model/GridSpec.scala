@@ -2,8 +2,7 @@ package de.htwg.se.beads.model
 
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers
-import Enums.Stitch
-import Enums.DefaultColors
+import _root_.de.htwg.se.beads.util.Enums.*
 import scala.io.AnsiColor._
 
 class GridSpec extends AnyWordSpec with Matchers {

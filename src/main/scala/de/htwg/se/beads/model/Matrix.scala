@@ -1,8 +1,7 @@
 package de.htwg.se.beads.model
 
+import de.htwg.se.beads.util.Enums.*
 import scala.collection.immutable.Vector
-import de.htwg.se.beads.model.Enums.Stitch
-import de.htwg.se.beads.model.Enums.DefaultColors
 
 case class Matrix(
     matrix: Vector[Vector[Bead]],

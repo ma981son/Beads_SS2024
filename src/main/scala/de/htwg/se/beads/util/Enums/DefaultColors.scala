@@ -1,4 +1,4 @@
-package de.htwg.se.beads.model.Enums
+package de.htwg.se.beads.util.Enums
 
 import de.htwg.se.beads.model.Color
 

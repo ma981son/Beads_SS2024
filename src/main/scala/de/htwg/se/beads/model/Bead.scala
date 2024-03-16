@@ -1,5 +1,6 @@
 package de.htwg.se.beads.model
-import de.htwg.se.beads.model.Enums.DefaultColors
+
+import de.htwg.se.beads.util.Enums.DefaultColors
 import scala.io.AnsiColor.RESET
 
 final case class Bead(

@@ -3,7 +3,7 @@ package de.htwg.se.beads.model
 import org.scalatest.wordspec.AnyWordSpec
 
 import org.scalatest.matchers.should.Matchers
-import Enums.Stitch
+import _root_.de.htwg.se.beads.util.Enums.*
 
 class MatrixSpec extends AnyWordSpec with Matchers {
 
