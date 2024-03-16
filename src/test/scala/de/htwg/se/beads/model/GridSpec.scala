@@ -168,11 +168,11 @@ class GridSpec extends AnyWordSpec with Matchers {
       .setBeadColor(0, 0, red)
       .setBeadColor(1, 0, red)
     val expectedString = "\n" +
-      "---------------" + "\n" +
+      "------------------" + "\n" +
       "|   |" + "|   |" + "|   |" + "\n" +
-      "---------------" + "\n" +
+      "------------------" + "\n" +
       "|   |" + "|   |" + "|   |" + "\n" +
-      "---------------"
+      "------------------"
       + "\n"
 
     "have a string representation with the correct format" in {

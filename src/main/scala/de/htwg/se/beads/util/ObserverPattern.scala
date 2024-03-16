@@ -1,7 +1,7 @@
 package de.htwg.se.beads.util
 
 class TestObject extends Observer {
-  def update: Unit = println("Ping")
+  def update(): Boolean = { println("Ping"); true }
 }
 
 object ObserverPattern {
@@ -13,10 +13,10 @@ object ObserverPattern {
     new TestObject // > observer2  : TestObject = TestObject@26ee7a14
   observable.add(observer1)
   observable.add(observer2)
-  observable.notifyObservers // > Ping
+  observable.notifyObservers() // > Ping
   // | Ping
   observable.remove(observer1)
-  observable.notifyObservers // > Ping
+  observable.notifyObservers() // > Ping
   observable.remove(observer2)
-  observable.notifyObservers
+  observable.notifyObservers()
 }

@@ -1,36 +1,47 @@
 package de.htwg.se.beads.controller
 
-import de.htwg.se.beads.model.Color
-import de.htwg.se.beads.model.Grid
+import de.htwg.se.beads.model.{Color, Grid}
 import de.htwg.se.beads.util.Enums.Stitch
-import de.htwg.se.beads.util.Observable
+import de.htwg.se.beads.util.{Observable, UndoManager}
 
 final class Controller(var grid: Grid) extends Observable {
 
+  private val undoManager: UndoManager = new UndoManager
+
   def createEmptyGrid(length: Int, width: Int, stitch: Stitch): Unit = {
-    grid = new Grid(
-      length,
-      width,
-      startColor = Color(255, 255, 255),
-      stitch = stitch
-    )
-    notifyObservers
+    undoManager.doStep(CreateGridCommand(length, width, stitch, this))
+    notifyObservers()
   }
 
   def setBeadColor(row: Int, col: Int, color: Color): Unit = {
-    grid = grid.setBeadColor(row, col, color)
-    notifyObservers
+    undoManager.doStep(SetBeadColorCommand(row, col, color, this))
+    notifyObservers()
   }
 
   def changeGridSize(length: Int, width: Int): Unit = {
-    grid = grid.changeSize(length, width)
-    notifyObservers
+    undoManager.doStep(ChangeGridSizeCommand(length, width, this))
+    notifyObservers()
   }
 
   def changeGridStitch(stitch: Stitch): Unit = {
-    grid = grid.changeStitch(stitch)
-    notifyObservers
+    undoManager.doStep(ChangeGridStitchCommand(stitch, this))
+    notifyObservers()
+  }
+
+  def fillGrid(color: Color): Unit = {
+    undoManager.doStep(FillGridCommand(color, this))
+    notifyObservers()
   }
 
   def GridToString: String = grid.toString()
+
+  def undo(): Unit = {
+    undoManager.undoStep()
+    notifyObservers()
+  }
+
+  def redo(): Unit = {
+    undoManager.redoStep()
+    notifyObservers()
+  }
 }

@@ -10,7 +10,6 @@ import scala.io.AnsiColor.WHITE
 import de.htwg.se.beads.model.Color
 
 class Tui(controller: Controller) extends Observer {
-
   private val ANSI_YELLOW = "\u001B[33m"
   private val ANSI_RESET = "\u001B[0m"
 
@@ -18,7 +17,6 @@ class Tui(controller: Controller) extends Observer {
 
   def processInputSizeLine(input: String): Unit = {
     input.split(" ").toList match {
-
       case List(row, column, stitchName)
           if (row.matches("\\d+") && column.matches("\\d+")) =>
         val stitch = stringToStitch.stitches.getOrElse(
@@ -48,7 +46,6 @@ class Tui(controller: Controller) extends Observer {
 
   def processInputLine(input: String): Unit = {
     input.split(" ").toList match {
-
       case List("size", row, column)
           if (row.matches("\\d+") && column.matches("\\d+")) =>
         controller.changeGridSize(row.toInt, column.toInt)
@@ -58,7 +55,13 @@ class Tui(controller: Controller) extends Observer {
           Stitch.Square
         )
         controller.changeGridStitch(stitch)
-
+      case List("fill", color) =>
+        val ansiColor = stringToAnsi.colors.getOrElse(color, WHITE)
+        controller.fillGrid(
+          rgbToAnsi.colors
+            .map(_.swap)
+            .getOrElse(ansiColor, DefaultColors.NoColor.color)
+        )
       case List(row, column, color)
           if (row.matches("\\d+") && column.matches("\\d+")) =>
         val ansiColor =
@@ -78,6 +81,8 @@ class Tui(controller: Controller) extends Observer {
             .getOrElse(ansiColor, DefaultColors.NoColor.color)
         )
 
+      case List("z") => controller.undo()
+      case List("y") => controller.redo()
       case List("n") =>
         print("Enter Grid length and width: ")
         val inputSize = readLine()
@@ -86,5 +91,8 @@ class Tui(controller: Controller) extends Observer {
     }
   }
 
-  override def update: Unit = println(controller.GridToString)
+  override def update(): Boolean = {
+    println(controller.GridToString)
+    true
+  }
 }

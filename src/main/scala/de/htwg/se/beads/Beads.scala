@@ -11,6 +11,7 @@ object Beads_Object {
 
   val controller = new Controller(new Grid(1, 6))
   val tui = new Tui(controller)
+  controller.notifyObservers()
 
   @main def beads: Unit = {
     var input: String = ""
@@ -18,7 +19,10 @@ object Beads_Object {
     println("Change color: x-coord y-coord color")
     println("Change Grid size: size row-number col-number")
     println("Change Grid stitch: stitch stitch-name")
+    println("Change Grid color: fill color")
     println("Create new Template: n")
+    println("Undo: z")
+    println("Undo: y")
     println("Available Colors:")
     print(s"${BLACK}black${RESET}, ${RED}red${RESET}, ${GREEN}green${RESET}, ")
     print(
