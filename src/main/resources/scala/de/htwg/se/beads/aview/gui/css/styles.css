@@ -1,0 +1,101 @@
+.root {
+  -fx-background-color: linear-gradient(#fffefd, #fffefd),
+    repeating-image-pattern(
+      "https://edencoding.com/resources/wp-content/uploads/2021/02/Stars_128.png"
+    ),
+    radial-gradient(center 50% 50%, radius 50%, #fffefd, #fffefd);
+}
+
+/* ScrollPane */
+.scroll-pane {
+  -fx-background-color: transparent;
+  -fx-border-color: none; 
+  -fx-border-width: 1px; 
+}
+
+/* Scrollbars */
+.scroll-pane .scroll-bar {
+  -fx-background-color: transparent; 
+}
+
+.scroll-pane .scroll-bar .thumb {
+  -fx-background-color: #a7a4a1; 
+  -fx-border-radius: 20px;
+  -fx-border: 6px solid transparent;
+}
+
+.scroll-pane .corner {
+  -fx-background-color: transparent; 
+}
+
+/* Bead Grid */ 
+.beadGrid {
+  -fx-background-color: #eeeae6;
+  -fx-border-radius: 50px;
+}
+
+/* Toolbar */ 
+.toolbar {
+  -fx-background-color: #eeeae6;
+  -fx-padding: 10px;
+  -fx-border-radius: 50px;
+}
+
+/* Toolbar Buttons */ 
+.toolbarButton {
+  -fx-background-color: #a7a4a1;
+  -fx-padding: 10px;
+  -fx-border-radius: 50px;
+  -fx-border-width: 0;
+  -fx-mark-color: #3C3C3C
+}
+
+.toolbarButton:hover {
+  -fx-effect: dropshadow(three-pass-box, #a1a2a7, 10, 0, 0, 0);
+}
+
+.toolbarButton .label {
+  -fx-font-family: "Courier New";
+  -fx-font-size: 14px;
+  -fx-font-weight: bold;
+  -fx-text-fill:#3C3C3C
+}
+
+.toolbarButton .context-menu {
+  -fx-background-color: #3C3C3C;
+  -fx-text-fill: #e6e8ee;
+}
+
+.toolbarButton .menu-item > .label { 
+  -fx-font-family: "Courier New";
+  -fx-text-fill: #e6e8ee;
+}
+
+.toolbarButton .menu-item:focused { 
+  -fx-background-color: #e6e8ee;
+}
+
+.toolbarButton .menu-item:focused > .label {
+  -fx-text-fill: #3C3C3C;
+}
+
+/* Textfield */
+.textField {
+  -fx-font-family: "Courier New";
+  -fx-font-size: 14px;
+  -fx-text-fill: #3C3C3C;
+  -fx-background-color: #fffefd;
+  -fx-padding: 10px;
+  -fx-border-radius: 50px;
+  -fx-border: 2px solid #a1a2a7;
+}
+
+.textField:focused {
+  -fx-effect: dropshadow(three-pass-box, #a1a2a7, 10, 0, 0, 0);
+}
+
+
+
+
+
+

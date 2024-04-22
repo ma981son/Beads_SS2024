@@ -2,6 +2,7 @@ package de.htwg.se.beads.model
 
 import de.htwg.se.beads.model.BeadVector
 import de.htwg.se.beads.util.Enums.*
+import scalafx.scene.paint.Color
 
 final case class Grid(beads: Matrix) {
 
@@ -61,7 +62,7 @@ final case class Grid(beads: Matrix) {
 
   object String {
 
-    var strategy = if (stitch.equals(Stitch.Brick)) strategy1 else strategy2
+    val strategy = if (stitch.equals(Stitch.Brick)) strategy1 else strategy2
 
     def strategy1: String = {
       val regex = "x".r

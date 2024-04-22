@@ -12,4 +12,12 @@ object stringToStitch {
     "square" -> Stitch.Square,
     "fringe" -> Stitch.Fringe
   )
+
+  def stringToStitch(stringValue: String): Stitch =
+    stringValue match
+      case "Square" => Stitch.Square
+      case "Brick"  => Stitch.Brick
+      case "Fringe" => Stitch.Fringe
+      case _        => Stitch.Square
+
 }

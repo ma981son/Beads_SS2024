@@ -1,11 +1,11 @@
 package de.htwg.se.beads.aview
 
 import de.htwg.se.beads.model.Grid
-import de.htwg.se.beads.model.Color
 import de.htwg.se.beads.model.aview.Tui
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers
 import de.htwg.se.beads.controller.Controller
+import scalafx.scene.paint.Color
 
 class TuiSpec extends AnyWordSpec with Matchers {
 
@@ -48,7 +48,7 @@ class TuiSpec extends AnyWordSpec with Matchers {
         val controller = new Controller(grid)
         val tui = new Tui(controller)
         val input = "0 0 red"
-        val expectedGrid = grid.setBeadColor(0, 0, Color(255, 0, 0))
+        val expectedGrid = grid.setBeadColor(0, 0, Color(255, 0, 0, 1))
         tui.processInputLine(input)
         controller.grid should be(expectedGrid)
       }

@@ -1,10 +1,15 @@
 scalaVersion := "3.4.0"
 
-lazy val root = project
-  .in(file("."))
+javacOptions ++= Seq("-source", "11", "-target", "11")
+
+lazy val root = (project in file("."))
   .settings(
     name := "Beads_SA",
     version := "0.1.0-SNAPSHOT",
-    libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.10" % "test",
+    libraryDependencies ++= Seq(
+      "org.scalatest" %% "scalatest" % "3.2.10" % "test",
+      // ScalaFX dependencies
+      "org.scalafx" %% "scalafx" % "20.0.0-R31"
+    ),
     coverageEnabled := true
   )

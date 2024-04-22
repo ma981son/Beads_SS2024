@@ -7,86 +7,146 @@ import de.htwg.se.beads.util.Observer
 import de.htwg.se.beads.util.Enums.{Stitch, stringToStitch, DefaultColors}
 import de.htwg.se.beads.model.rgbToAnsi.colors
 import scala.io.AnsiColor.WHITE
-import de.htwg.se.beads.model.Color
 
 class Tui(controller: Controller) extends Observer {
+
   private val ANSI_YELLOW = "\u001B[33m"
   private val ANSI_RESET = "\u001B[0m"
+
+  private val warningIndexOutOfBounds =
+    s"${ANSI_YELLOW}Warning: Bead index out of bounds.$ANSI_RESET"
+
+  private val warningInvalidMatrixSize =
+    s"${ANSI_YELLOW}Warning: Invalid Matrix Size.$ANSI_RESET"
+
+  private val warningIncorrectInputFormat =
+    s"${ANSI_YELLOW}Warning: Incorrect input format. Defaulting to Square stitch${ANSI_RESET}"
+
+  private def getWarningStitchName(stitchName: String): String = {
+    s"${ANSI_YELLOW}Warning: Stitch '$stitchName' is not recognized.${ANSI_RESET}"
+  }
+
+  private def getWarningColor(color: String): String = {
+    s"${ANSI_YELLOW}Warning: Color '$color' is not recognized.${ANSI_RESET}"
+  }
 
   controller.add(this)
 
   def processInputSizeLine(input: String): Unit = {
     input.split(" ").toList match {
+
       case List(row, column, stitchName)
           if (row.matches("\\d+") && column.matches("\\d+")) =>
-        val stitch = stringToStitch.stitches.getOrElse(
-          stitchName.toLowerCase,
-          Stitch.Square
-        )
-        controller.createEmptyGrid(
-          row.toInt,
-          column.toInt,
-          stitch = stitch
-        )
+        try {
+          val stitch = stringToStitch.stitches.getOrElse(
+            stitchName.toLowerCase,
+            Stitch.Square
+          )
+          controller.createEmptyGrid(
+            row.toInt,
+            column.toInt,
+            stitch = stitch
+          )
+        } catch {
+          case _: IndexOutOfBoundsException =>
+            println(warningIndexOutOfBounds)
+          case _: IllegalArgumentException =>
+            println(warningInvalidMatrixSize)
+        }
 
       case List(row, column)
           if (row.matches("\\d+") && column.matches("\\d+")) =>
-        controller.createEmptyGrid(
-          row.toInt,
-          column.toInt,
-          stitch = Stitch.Square
-        )
+        try {
+          controller.createEmptyGrid(
+            row.toInt,
+            column.toInt,
+            stitch = Stitch.Square
+          )
+        } catch {
+          case _: IndexOutOfBoundsException =>
+            println(warningIndexOutOfBounds)
+          case _: IllegalArgumentException =>
+            println(warningInvalidMatrixSize)
+        }
 
       case _ =>
         println(
-          s"${ANSI_YELLOW}Incorrect input format. Defaulting to Square stitch"
+          warningIncorrectInputFormat
         )
     }
   }
 
   def processInputLine(input: String): Unit = {
     input.split(" ").toList match {
+
       case List("size", row, column)
           if (row.matches("\\d+") && column.matches("\\d+")) =>
-        controller.changeGridSize(row.toInt, column.toInt)
+        try {
+          controller.changeGridSize(row.toInt, column.toInt)
+        } catch {
+          case _: IndexOutOfBoundsException =>
+            println(warningIndexOutOfBounds)
+        }
+
       case List("stitch", stitchName) =>
         val stitch = stringToStitch.stitches.getOrElse(
-          stitchName.toLowerCase,
-          Stitch.Square
+          stitchName.toLowerCase, {
+            println(
+              getWarningStitchName(stitchName)
+            )
+            Stitch.Square
+          }
         )
         controller.changeGridStitch(stitch)
+
       case List("fill", color) =>
-        val ansiColor = stringToAnsi.colors.getOrElse(color, WHITE)
+        val ansiColor = stringToAnsi.colors.getOrElse(
+          color, {
+            println(
+              getWarningColor(color)
+            )
+            WHITE
+          }
+        )
         controller.fillGrid(
           rgbToAnsi.colors
             .map(_.swap)
             .getOrElse(ansiColor, DefaultColors.NoColor.color)
         )
+
       case List(row, column, color)
           if (row.matches("\\d+") && column.matches("\\d+")) =>
-        val ansiColor =
-          stringToAnsi.colors.getOrElse(
-            color, {
-              println(
-                s"${ANSI_YELLOW}Warning: Color '$color' is not recognized.${ANSI_RESET}"
-              )
-              WHITE
-            }
+        try {
+          val ansiColor =
+            stringToAnsi.colors.getOrElse(
+              color, {
+                println(
+                  getWarningColor(color)
+                )
+                WHITE
+              }
+            )
+          controller.setBeadColor(
+            row.toInt,
+            column.toInt,
+            rgbToAnsi.colors
+              .map(_.swap)
+              .getOrElse(ansiColor, DefaultColors.NoColor.color)
           )
-        controller.setBeadColor(
-          row.toInt,
-          column.toInt,
-          rgbToAnsi.colors
-            .map(_.swap)
-            .getOrElse(ansiColor, DefaultColors.NoColor.color)
-        )
+        } catch {
+          case _: IndexOutOfBoundsException =>
+            println(warningIndexOutOfBounds)
+        }
 
       case List("z") => controller.undo()
+
       case List("y") => controller.redo()
+
       case List("n") =>
-        print("Enter Grid length and width: ")
+        print("Enter Template length, width, and stitch: ")
         val inputSize = readLine()
         processInputSizeLine(inputSize)
+
       case _ =>
     }
   }

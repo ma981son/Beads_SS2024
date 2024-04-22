@@ -4,13 +4,14 @@ import org.scalatest.wordspec.AnyWordSpec
 
 import org.scalatest.matchers.should.Matchers
 import _root_.de.htwg.se.beads.util.Enums.*
+import scalafx.scene.paint.Color
 
 class MatrixSpec extends AnyWordSpec with Matchers {
 
   "A Matrix " when {
 
-    val white = Color(255, 255, 255)
-    val red = Color(255, 0, 0)
+    val white = Color(255, 255, 255, 1)
+    val red = Color(255, 0, 0, 1)
 
     val bead = Bead()
 

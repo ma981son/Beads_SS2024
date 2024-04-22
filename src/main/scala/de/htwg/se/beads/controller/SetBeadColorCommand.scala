@@ -1,7 +1,8 @@
 package de.htwg.se.beads.controller
 
-import de.htwg.se.beads.model.{Color, Grid}
+import de.htwg.se.beads.model.{Grid}
 import de.htwg.se.beads.util.Command
+import scalafx.scene.paint.Color
 
 class SetBeadColorCommand(
     row: Int,

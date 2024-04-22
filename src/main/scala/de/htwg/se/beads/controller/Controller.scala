@@ -1,8 +1,9 @@
 package de.htwg.se.beads.controller
 
-import de.htwg.se.beads.model.{Color, Grid}
+import de.htwg.se.beads.model.{Grid}
 import de.htwg.se.beads.util.Enums.Stitch
 import de.htwg.se.beads.util.{Observable, UndoManager}
+import scalafx.scene.paint.Color
 
 final class Controller(var grid: Grid) extends Observable {
 
