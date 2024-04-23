@@ -1,4 +1,4 @@
-package de.htwg.se.beads.model
+package de.htwg.se.beads.model.gridComponent.gridBaseImpl
 
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -6,6 +6,7 @@ import org.scalatest.matchers.should.Matchers
 import _root_.de.htwg.se.beads.util.Enums.*
 import scala.io.AnsiColor._
 import scalafx.scene.paint.Color
+import de.htwg.se.beads.model.gridComponent.gridBaseImpl.Bead
 
 class BeadSpec extends AnyWordSpec with Matchers {
 

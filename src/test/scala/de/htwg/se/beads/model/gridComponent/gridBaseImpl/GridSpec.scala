@@ -1,4 +1,4 @@
-package de.htwg.se.beads.model
+package de.htwg.se.beads.model.gridComponent.gridBaseImpl
 
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers
@@ -20,8 +20,8 @@ class GridSpec extends AnyWordSpec with Matchers {
     "created with a length, width a starting color and a stitch" should {
 
       "have the correct number of rows and columns" in {
-        grid.size_rows should be(2)
-        grid.size_cols should be(3)
+        grid.length should be(2)
+        grid.width should be(3)
       }
 
       "have the correct stitch" in {
@@ -44,8 +44,8 @@ class GridSpec extends AnyWordSpec with Matchers {
     val grid = Grid(matrix)
 
     "have the correct number of rows and columns" in {
-      grid.size_rows should be(2)
-      grid.size_cols should be(3)
+      grid.length should be(2)
+      grid.width should be(3)
     }
 
     "have the correct stitch" in {
@@ -63,8 +63,8 @@ class GridSpec extends AnyWordSpec with Matchers {
 
     "return a grid with the correct size" in {
       val newGrid = grid.changeSize(3, 4)
-      newGrid.size_rows should be(3)
-      newGrid.size_cols should be(4)
+      newGrid.length should be(3)
+      newGrid.width should be(4)
     }
   }
 
@@ -73,8 +73,8 @@ class GridSpec extends AnyWordSpec with Matchers {
     "return a grid with the correct stitch" in {
       val newGrid = grid.changeStitch(Stitch.Brick)
       newGrid.stitch should be(Stitch.Brick)
-      newGrid.size_rows should be(grid.size_rows)
-      newGrid.size_cols should be(grid.size_cols)
+      newGrid.length should be(grid.length)
+      newGrid.width should be(grid.width)
       newGrid.allBeads() should be(grid.allBeads())
     }
   }
