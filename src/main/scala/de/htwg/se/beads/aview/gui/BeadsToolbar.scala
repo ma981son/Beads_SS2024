@@ -1,6 +1,6 @@
 package de.htwg.se.beads.aview.gui
 
-import de.htwg.se.beads.controller.Controller
+import de.htwg.se.beads.controller.controllerComponent.ControllerInterface
 import scalafx.Includes._
 import scalafx.scene.layout.VBox
 import scalafx.scene.control.Button
@@ -23,7 +23,7 @@ import de.htwg.se.beads.util.Enums.stringToStitch.stringToStitch
 import scalafx.scene.text.Font
 import scalafx.scene.text.FontWeight
 
-class BeadsToolbar(controller: Controller) extends VBox {
+class BeadsToolbar(controller: ControllerInterface) extends VBox {
 
   styleClass += "toolbar"
 
@@ -91,7 +91,7 @@ class BeadsToolbar(controller: Controller) extends VBox {
 
   // ChoiceBox
   val stitchChoiceOptions = ObservableBuffer("Square", "Brick")
-  var currentStitchOption = StringProperty(controller.grid.stitch.toString())
+  var currentStitchOption = StringProperty(controller.gridStitch.toString())
 
   val stitchChoiceBox = new ChoiceBox[String](stitchChoiceOptions) {
     styleClass += "toolbarButton"

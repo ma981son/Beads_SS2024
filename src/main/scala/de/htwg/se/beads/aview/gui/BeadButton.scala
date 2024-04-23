@@ -1,6 +1,6 @@
 package de.htwg.se.beads.aview.gui
 
-import de.htwg.se.beads.controller.Controller
+import de.htwg.se.beads.controller.controllerComponent.ControllerInterface
 import scalafx.scene.control.Button
 import scalafx.scene.layout.Border
 import scalafx.scene.layout.BorderStroke
@@ -15,9 +15,10 @@ object BeadButton {
     "-fx-border-color: #a1a2a7; -fx-border-width: 1px; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-background-insets: 1px"
 }
 
-class BeadButton(row: Int, col: Int, controller: Controller) extends Button {
+class BeadButton(row: Int, col: Int, controller: ControllerInterface)
+    extends Button {
 
-  def bead = controller.grid.bead(row, col)
+  def bead = controller.bead(row, col)
 
   prefHeight = BeadButton.BEAD_BUTTON_HEIGHT
   prefWidth = BeadButton.BEAD_BUTTON_WIDTH

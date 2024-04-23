@@ -1,4 +1,4 @@
-package de.htwg.se.beads.model
+package de.htwg.se.beads.model.gridComponent.gridBaseImpl
 
 import de.htwg.se.beads.util.Enums.*
 import scala.collection.immutable.Vector

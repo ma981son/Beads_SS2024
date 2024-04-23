@@ -28,6 +28,8 @@ class BeadsColorPicker extends ColorPicker {
 
   styleClass += "toolbarButton"
 
+  value = SelectedColor.getColor
+
   onAction = (_: ActionEvent) => {
     SelectedColor.setColor(value())
   }

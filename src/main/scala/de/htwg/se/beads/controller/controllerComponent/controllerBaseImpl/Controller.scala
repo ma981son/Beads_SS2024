@@ -1,13 +1,25 @@
-package de.htwg.se.beads.controller
+package de.htwg.se.beads.controller.controllerComponent.controllerBaseImpl
 
-import de.htwg.se.beads.model.{Grid}
 import de.htwg.se.beads.util.Enums.Stitch
 import de.htwg.se.beads.util.{Observable, UndoManager}
 import scalafx.scene.paint.Color
+import de.htwg.se.beads.model.gridComponent.GridInterface
+import de.htwg.se.beads.controller.controllerComponent.ControllerInterface
+import de.htwg.se.beads.model.gridComponent.BeadInterface
 
-final class Controller(var grid: Grid) extends Observable {
+final class Controller(var grid: GridInterface)
+    extends Observable
+    with ControllerInterface {
 
   private val undoManager: UndoManager = new UndoManager
+
+  def gridLength: Int = grid.length
+
+  def gridWidth: Int = grid.width
+
+  def gridStitch: Stitch = { grid.stitch }
+
+  def bead(row: Int, col: Int): BeadInterface = { grid.bead(row, col) }
 
   def createEmptyGrid(length: Int, width: Int, stitch: Stitch): Unit = {
     undoManager.doStep(CreateGridCommand(length, width, stitch, this))

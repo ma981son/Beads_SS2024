@@ -1,14 +1,14 @@
 package de.htwg.se.beads.model.aview
 
 import scala.io.StdIn.readLine
-import de.htwg.se.beads.model.{Grid, rgbToAnsi, stringToAnsi}
-import de.htwg.se.beads.controller.Controller
+import de.htwg.se.beads.util.Enums.{rgbToAnsi, stringToAnsi}
+import de.htwg.se.beads.model.gridComponent.gridBaseImpl.Grid
+import de.htwg.se.beads.controller.controllerComponent.ControllerInterface
 import de.htwg.se.beads.util.Observer
 import de.htwg.se.beads.util.Enums.{Stitch, stringToStitch, DefaultColors}
-import de.htwg.se.beads.model.rgbToAnsi.colors
 import scala.io.AnsiColor.WHITE
 
-class Tui(controller: Controller) extends Observer {
+class Tui(controller: ControllerInterface) extends Observer {
 
   private val ANSI_YELLOW = "\u001B[33m"
   private val ANSI_RESET = "\u001B[0m"

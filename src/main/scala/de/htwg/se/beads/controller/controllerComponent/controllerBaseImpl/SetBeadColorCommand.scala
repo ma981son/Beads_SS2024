@@ -1,6 +1,6 @@
-package de.htwg.se.beads.controller
+package de.htwg.se.beads.controller.controllerComponent.controllerBaseImpl
 
-import de.htwg.se.beads.model.{Grid}
+import de.htwg.se.beads.model.gridComponent.GridInterface
 import de.htwg.se.beads.util.Command
 import scalafx.scene.paint.Color
 
@@ -10,7 +10,7 @@ class SetBeadColorCommand(
     color: Color,
     controller: Controller
 ) extends Command {
-  var memento: Grid = controller.grid
+  var memento: GridInterface = controller.grid
 
   override def doStep(): Unit = controller.grid =
     controller.grid.setBeadColor(row, col, color)

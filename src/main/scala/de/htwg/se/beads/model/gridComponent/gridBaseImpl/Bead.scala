@@ -1,14 +1,16 @@
-package de.htwg.se.beads.model
+package de.htwg.se.beads.model.gridComponent.gridBaseImpl
 
 import de.htwg.se.beads.util.Enums.DefaultColors
 import scala.io.AnsiColor.RESET
 import scalafx.scene.paint.Color
 import de.htwg.se.beads.aview.gui.SelectedColor
+import de.htwg.se.beads.util.Enums.rgbToAnsi
+import de.htwg.se.beads.model.gridComponent.BeadInterface
 
 final case class Bead(
     beadCoord: Coord = Coord(0, 0),
     beadColor: Color = DefaultColors.NoColor.color
-) {
+) extends BeadInterface {
 
   def isColored: Boolean = beadColor != DefaultColors.NoColor.color
 

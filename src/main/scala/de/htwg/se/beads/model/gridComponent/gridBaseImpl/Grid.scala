@@ -1,10 +1,11 @@
-package de.htwg.se.beads.model
+package de.htwg.se.beads.model.gridComponent.gridBaseImpl
 
-import de.htwg.se.beads.model.BeadVector
+import de.htwg.se.beads.model.gridComponent.gridBaseImpl.BeadVector
 import de.htwg.se.beads.util.Enums.*
 import scalafx.scene.paint.Color
+import de.htwg.se.beads.model.gridComponent.GridInterface
 
-final case class Grid(beads: Matrix) {
+case class Grid(beads: Matrix) extends GridInterface {
 
   def this(
       length: Int,
@@ -20,8 +21,8 @@ final case class Grid(beads: Matrix) {
     )
   )
 
-  val size_rows: Int = beads.size._1
-  val size_cols: Int = beads.size._2
+  val length: Int = beads.size._1
+  val width: Int = beads.size._2
 
   def changeGrid(l: Int, w: Int, stitch: Stitch): Grid = copy(
     new Matrix(l, w, stitch = stitch)
@@ -53,7 +54,7 @@ final case class Grid(beads: Matrix) {
   }
 
   def fillGrid(color: Color): Grid = {
-    copy(beads = new Matrix(size_rows, size_cols, color, stitch))
+    copy(beads = new Matrix(length, width, color, stitch))
   }
 
   def row(row: Int): BeadVector = BeadVector(beads.matrix(row))
@@ -66,17 +67,17 @@ final case class Grid(beads: Matrix) {
 
     def strategy1: String = {
       val regex = "x".r
-      val line = "x" * size_cols + "\n"
-      var lineseparator = ("-" * 6) * size_cols + "\n"
+      val line = "x" * width + "\n"
+      var lineseparator = ("-" * 6) * width + "\n"
       lineseparator = "---" + lineseparator
       val line1 = " " * 3 + line
       var box =
-        "\n" + (lineseparator + (line1 + lineseparator + line + lineseparator) * (size_rows / 2))
-      if (size_rows % 2 != 0) {
+        "\n" + (lineseparator + (line1 + lineseparator + line + lineseparator) * (length / 2))
+      if (length % 2 != 0) {
         box = box + line1 + lineseparator
       }
-      for (row <- 0 until size_rows) {
-        for (col <- 0 until size_cols) {
+      for (row <- 0 until length) {
+        for (col <- 0 until width) {
           box = regex.replaceFirstIn(box, bead(row, col).toString)
         }
       }
@@ -85,11 +86,11 @@ final case class Grid(beads: Matrix) {
 
     def strategy2: String = {
       val regex = "x".r
-      val line = "x" * size_cols + "\n"
-      var lineseparator = ("-" * 6) * size_cols + "\n"
-      var box = "\n" + (lineseparator + (line + lineseparator) * size_rows)
-      for (row <- 0 until size_rows) {
-        for (col <- 0 until size_cols) {
+      val line = "x" * width + "\n"
+      var lineseparator = ("-" * 6) * width + "\n"
+      var box = "\n" + (lineseparator + (line + lineseparator) * length)
+      for (row <- 0 until length) {
+        for (col <- 0 until width) {
           box = regex.replaceFirstIn(box, bead(row, col).toString)
         }
       }
