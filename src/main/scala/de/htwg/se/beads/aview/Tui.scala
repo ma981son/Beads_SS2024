@@ -7,8 +7,12 @@ import de.htwg.se.beads.util.Observer
 import de.htwg.se.beads.util.Enums.{Stitch, stringToStitch, DefaultColors}
 import de.htwg.se.beads.model.rgbToAnsi.colors
 import scala.io.AnsiColor.WHITE
+import scala.util.Try
+import scala.util.{Success, Failure}
 
 class Tui(controller: Controller) extends Observer {
+
+  controller.add(this)
 
   private val ANSI_YELLOW = "\u001B[33m"
   private val ANSI_RESET = "\u001B[0m"
@@ -22,51 +26,50 @@ class Tui(controller: Controller) extends Observer {
   private val warningIncorrectInputFormat =
     s"${ANSI_YELLOW}Warning: Incorrect input format. Defaulting to Square stitch${ANSI_RESET}"
 
-  private def getWarningStitchName(stitchName: String): String = {
+  private def getWarningStitchName: String => String = { stitchName =>
     s"${ANSI_YELLOW}Warning: Stitch '$stitchName' is not recognized.${ANSI_RESET}"
   }
 
-  private def getWarningColor(color: String): String = {
+  private def getWarningColor: String => String = { color =>
     s"${ANSI_YELLOW}Warning: Color '$color' is not recognized.${ANSI_RESET}"
   }
-
-  controller.add(this)
 
   def processInputSizeLine(input: String): Unit = {
     input.split(" ").toList match {
 
       case List(row, column, stitchName)
           if (row.matches("\\d+") && column.matches("\\d+")) =>
-        try {
+        Try {
           val stitch = stringToStitch.stitches.getOrElse(
             stitchName.toLowerCase,
             Stitch.Square
           )
-          controller.createEmptyGrid(
-            row.toInt,
-            column.toInt,
-            stitch = stitch
-          )
-        } catch {
-          case _: IndexOutOfBoundsException =>
+          controller.createEmptyGrid(row.toInt, column.toInt, stitch = stitch)
+        } match {
+          case Success(_) =>
+          case Failure(_: IndexOutOfBoundsException) =>
             println(warningIndexOutOfBounds)
-          case _: IllegalArgumentException =>
+          case Failure(_: IllegalArgumentException) =>
             println(warningInvalidMatrixSize)
+          case Failure(_) =>
+            println(warningIncorrectInputFormat)
         }
 
       case List(row, column)
           if (row.matches("\\d+") && column.matches("\\d+")) =>
-        try {
+        Try {
           controller.createEmptyGrid(
             row.toInt,
             column.toInt,
             stitch = Stitch.Square
           )
-        } catch {
-          case _: IndexOutOfBoundsException =>
+        } match {
+          case Success(_) =>
+          case Failure(_: IndexOutOfBoundsException) =>
             println(warningIndexOutOfBounds)
-          case _: IllegalArgumentException =>
+          case Failure(_: IllegalArgumentException) =>
             println(warningInvalidMatrixSize)
+          case Failure(_) => println(warningIncorrectInputFormat)
         }
 
       case _ =>
@@ -81,11 +84,13 @@ class Tui(controller: Controller) extends Observer {
 
       case List("size", row, column)
           if (row.matches("\\d+") && column.matches("\\d+")) =>
-        try {
+        Try {
           controller.changeGridSize(row.toInt, column.toInt)
-        } catch {
-          case _: IndexOutOfBoundsException =>
+        } match {
+          case Success(_) =>
+          case Failure(_: IndexOutOfBoundsException) =>
             println(warningIndexOutOfBounds)
+          case Failure(_) => println(warningIncorrectInputFormat)
         }
 
       case List("stitch", stitchName) =>
@@ -116,7 +121,7 @@ class Tui(controller: Controller) extends Observer {
 
       case List(row, column, color)
           if (row.matches("\\d+") && column.matches("\\d+")) =>
-        try {
+        Try {
           val ansiColor =
             stringToAnsi.colors.getOrElse(
               color, {
@@ -133,9 +138,11 @@ class Tui(controller: Controller) extends Observer {
               .map(_.swap)
               .getOrElse(ansiColor, DefaultColors.NoColor.color)
           )
-        } catch {
-          case _: IndexOutOfBoundsException =>
+        } match {
+          case Success(_) =>
+          case Failure(_: IndexOutOfBoundsException) =>
             println(warningIndexOutOfBounds)
+          case Failure(_) => println(warningIncorrectInputFormat)
         }
 
       case List("z") => controller.undo()
