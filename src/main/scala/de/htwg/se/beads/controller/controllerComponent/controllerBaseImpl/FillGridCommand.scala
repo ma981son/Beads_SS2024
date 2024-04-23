@@ -1,23 +1,24 @@
-package de.htwg.se.beads.controller
+package de.htwg.se.beads.controller.controllerComponent.controllerBaseImpl
 
-import de.htwg.se.beads.model.{Grid}
+import de.htwg.se.beads.model.gridComponent.GridInterface
 import de.htwg.se.beads.util.{Command}
+import scalafx.scene.paint.Color
 
-class ChangeGridSizeCommand(length: Int, width: Int, controller: Controller)
-    extends Command {
+class FillGridCommand(color: Color, controller: Controller) extends Command {
 
-  var memento: Grid = controller.grid
+  var memento: GridInterface = controller.grid
 
   override def doStep(): Unit = {
     memento = controller.grid
-    val newGrid = controller.grid.changeSize(length, width)
-    controller.grid = newGrid
+    val newtemp = controller.grid.fillGrid(color)
+    controller.grid = newtemp
   }
 
   override def undoStep(): Unit = {
     val new_memento = controller.grid
     controller.grid = memento
     memento = new_memento
+
   }
 
   override def redoStep(): Unit = {

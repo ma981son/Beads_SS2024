@@ -9,7 +9,8 @@ lazy val root = (project in file("."))
     libraryDependencies ++= Seq(
       "org.scalatest" %% "scalatest" % "3.2.10" % "test",
       // ScalaFX dependencies
-      "org.scalafx" %% "scalafx" % "20.0.0-R31"
+      "org.scalafx" %% "scalafx" % "20.0.0-R31",
+      "org.scala-lang.modules" %% "scala-swing" % "3.0.0"
     ),
     coverageEnabled := true
   )

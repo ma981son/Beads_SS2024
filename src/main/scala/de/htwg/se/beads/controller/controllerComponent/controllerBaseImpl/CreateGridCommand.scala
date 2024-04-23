@@ -1,6 +1,6 @@
-package de.htwg.se.beads.controller
+package de.htwg.se.beads.controller.controllerComponent.controllerBaseImpl
 
-import de.htwg.se.beads.model.{Grid}
+import de.htwg.se.beads.model.gridComponent.GridInterface
 import de.htwg.se.beads.util.Enums.{Stitch}
 import de.htwg.se.beads.util.Command
 
@@ -11,7 +11,7 @@ class CreateGridCommand(
     controller: Controller
 ) extends Command {
 
-  var memento: Grid = controller.grid
+  var memento: GridInterface = controller.grid
 
   override def doStep(): Unit = {
     memento = controller.grid

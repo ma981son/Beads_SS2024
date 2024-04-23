@@ -1,6 +1,5 @@
 package de.htwg.se.beads.aview.gui
 
-import de.htwg.se.beads.controller.Controller
 import scalafx.Includes._
 import scalafx.scene.{Scene}
 import scalafx.scene.layout.{BorderPane, VBox}
@@ -12,10 +11,11 @@ import scalafx.scene.layout.FlowPane
 import scalafx.scene.layout.Priority
 import scalafx.scene.layout.HBox
 import scalafx.geometry.Orientation
+import de.htwg.se.beads.controller.controllerComponent.ControllerInterface
 
 object BeadsScene {
 
-  def createScene(controller: Controller): Scene = {
+  def createScene(controller: ControllerInterface): Scene = {
     val borderPane = new BorderPane
     val beadGrid = new BeadGrid(controller)
 

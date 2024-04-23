@@ -20,7 +20,7 @@ import scalafx.scene.input.TouchEvent
 
 class ZoomableScrollPane(target: Node) extends ScrollPane {
   private var scaleValue = 1.0
-  private val minScaleValue = 0.25
+  private val minScaleValue = 0.05
   private val maxScaleValue = 2.0
   private val zoomIntensityMouse = 0.02
   private val zoomIntensityTouch = 0.005

@@ -1,18 +1,19 @@
-import de.htwg.se.beads.model.Grid
+import de.htwg.se.beads.model.gridComponent.gridBaseImpl.Grid
 import de.htwg.se.beads.model.aview.{Tui}
 import scala.io.StdIn.readLine
-import de.htwg.se.beads.controller.Controller
 import scalafx.application.JFXApp3
 import de.htwg.se.beads.aview.gui.BeadsScene
 import scala.io.AnsiColor._
 import scalafx.application.Platform
 import scalafx.scene.image.Image
+import de.htwg.se.beads.controller.controllerComponent.ControllerInterface
+import de.htwg.se.beads.controller.controllerComponent.controllerBaseImpl.Controller
 
 object Beads_Object extends JFXApp3 {
 
   override def start(): Unit = {
 
-    val controller = new Controller(new Grid(1, 6))
+    val controller = new Controller(new Grid(1, 5))
 
     // GUI
     val stage = new JFXApp3.PrimaryStage {
