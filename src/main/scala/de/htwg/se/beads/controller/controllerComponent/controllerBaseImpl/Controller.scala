@@ -6,12 +6,16 @@ import scalafx.scene.paint.Color
 import de.htwg.se.beads.model.gridComponent.GridInterface
 import de.htwg.se.beads.controller.controllerComponent.ControllerInterface
 import de.htwg.se.beads.model.gridComponent.BeadInterface
+import com.google.inject.Inject
+import de.htwg.se.beads.BeadsModule
+import com.google.inject.Guice
 
-final class Controller(var grid: GridInterface)
+class Controller @Inject() (var grid: GridInterface)
     extends Observable
     with ControllerInterface {
 
   private val undoManager: UndoManager = new UndoManager
+  val injector = Guice.createInjector(new BeadsModule)
 
   def gridLength: Int = grid.length
 

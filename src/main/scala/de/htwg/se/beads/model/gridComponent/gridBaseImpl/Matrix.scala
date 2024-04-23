@@ -3,8 +3,9 @@ package de.htwg.se.beads.model.gridComponent.gridBaseImpl
 import de.htwg.se.beads.util.Enums.*
 import scala.collection.immutable.Vector
 import scalafx.scene.paint.Color
+import com.google.inject.Inject
 
-case class Matrix(
+case class Matrix @Inject() (
     matrix: Vector[Vector[Bead]],
     stitch: Stitch
 ) {

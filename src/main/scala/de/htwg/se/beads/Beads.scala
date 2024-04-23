@@ -8,12 +8,17 @@ import scalafx.application.Platform
 import scalafx.scene.image.Image
 import de.htwg.se.beads.controller.controllerComponent.ControllerInterface
 import de.htwg.se.beads.controller.controllerComponent.controllerBaseImpl.Controller
+import com.google.inject.Guice
+import de.htwg.se.beads.BeadsModule
+import de.htwg.se.beads.util.Enums.Stitch
 
 object Beads_Object extends JFXApp3 {
 
   override def start(): Unit = {
 
-    val controller = new Controller(new Grid(1, 5))
+    val injector = Guice.createInjector(new BeadsModule)
+
+    val controller = injector.getInstance(classOf[ControllerInterface])
 
     // GUI
     val stage = new JFXApp3.PrimaryStage {

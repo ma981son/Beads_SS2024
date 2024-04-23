@@ -4,8 +4,10 @@ import de.htwg.se.beads.model.gridComponent.gridBaseImpl.BeadVector
 import de.htwg.se.beads.util.Enums.*
 import scalafx.scene.paint.Color
 import de.htwg.se.beads.model.gridComponent.GridInterface
+import com.google.inject.Inject
+import com.google.inject.name.Named
 
-case class Grid(beads: Matrix) extends GridInterface {
+case class Grid @Inject() (beads: Matrix) extends GridInterface {
 
   def this(
       length: Int,
