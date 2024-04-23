@@ -146,7 +146,7 @@ class BeadsToolbar(controller: Controller) extends VBox {
       if (validateNumberInput(widthText) && validateNumberInput(lenghtText)) {
         val width = widthText.toInt
         val length = lenghtText.toInt
-        controller.changeGridSize(width, length)
+        controller.changeGridSize(length, width)
       } else {
         println(s"${ANSI_YELLOW}Warning: Invalid Matrix Size.$ANSI_RESET")
       }
@@ -202,8 +202,8 @@ class BeadsToolbar(controller: Controller) extends VBox {
       new Separator {
         orientation = Orientation.Vertical
       },
-      widthTextField,
       lengthTextField,
+      widthTextField,
       sizeButton,
       newTemplateButton,
       new Separator {
@@ -217,18 +217,20 @@ class BeadsToolbar(controller: Controller) extends VBox {
     vgap = 5
   }
 
-  def setOrientation(orientation: Orientation): Unit = {
+  def setOrientation(orientation: Option[Orientation]): Unit = {
     children.clear()
     orientation match
-      case Orientation.Horizontal =>
+      case Some(Orientation.Horizontal) =>
         children = List(toolBarFlowPlane)
         alignment = Pos.CenterLeft
         vgrow = Priority.Always
 
-      case Orientation.Vertical => // TODO: Add Vertical Orientation -> Make Draggable
-      case null =>
+      case Some(
+            Orientation.Vertical
+          ) => // TODO: Add Vertical Orientation -> Make Draggable
+      case _ =>
   }
 
-  setOrientation(Orientation.Horizontal)
+  setOrientation(Some(Orientation.Horizontal))
 
 }
