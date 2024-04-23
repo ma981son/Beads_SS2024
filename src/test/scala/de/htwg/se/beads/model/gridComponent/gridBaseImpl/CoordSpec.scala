@@ -1,4 +1,4 @@
-package de.htwg.se.beads.model
+package de.htwg.se.beads.model.gridComponent.gridBaseImpl
 
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers

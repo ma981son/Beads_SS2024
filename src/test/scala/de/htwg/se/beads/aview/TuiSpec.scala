@@ -1,11 +1,11 @@
 package de.htwg.se.beads.aview
 
-import de.htwg.se.beads.model.Grid
 import de.htwg.se.beads.model.aview.Tui
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers
-import de.htwg.se.beads.controller.Controller
 import scalafx.scene.paint.Color
+import de.htwg.se.beads.model.gridComponent.gridBaseImpl.Grid
+import de.htwg.se.beads.controller.controllerComponent.controllerBaseImpl.Controller
 
 class TuiSpec extends AnyWordSpec with Matchers {
 
