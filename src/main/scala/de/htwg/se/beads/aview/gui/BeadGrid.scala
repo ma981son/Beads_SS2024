@@ -41,7 +41,6 @@ class BeadGrid(controller: ControllerInterface)
   }
 
   private def generateButtons(): Unit = {
-    println("Controller Stitch: " + controller.gridStitch)
     controller.gridStitch match {
       case Stitch.Brick => brickStrategy()
       case _            => squareStrategy()

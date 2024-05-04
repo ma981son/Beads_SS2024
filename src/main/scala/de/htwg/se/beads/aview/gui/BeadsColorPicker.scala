@@ -22,6 +22,17 @@ object SelectedColor {
         .getGreen() * 255).toInt}%03d, ${(color
         .getBlue() * 255).toInt}%03d, ${color.getOpacity().toDouble})"
   }
+
+  def rgbaToColor(rgba: String): Color = {
+    val rgbaRegex =
+      """rgba\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3}),\s*([\d.]+)\)""".r
+    rgba match {
+      case rgbaRegex(r, g, b, a) =>
+        Color.rgb(r.toInt, g.toInt, b.toInt, a.toDouble)
+      case _ =>
+        throw new IllegalArgumentException("Invalid RGBA format")
+    }
+  }
 }
 
 class BeadsColorPicker extends ColorPicker {

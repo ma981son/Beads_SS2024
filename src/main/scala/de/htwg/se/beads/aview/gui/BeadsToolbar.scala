@@ -22,8 +22,11 @@ import scalafx.scene.control.Separator
 import de.htwg.se.beads.util.Enums.stringToStitch.stringToStitch
 import scalafx.scene.text.Font
 import scalafx.scene.text.FontWeight
+import de.htwg.se.beads.util.Observer
 
-class BeadsToolbar(controller: ControllerInterface) extends VBox {
+class BeadsToolbar(controller: ControllerInterface) extends VBox with Observer {
+
+  controller.add(this)
 
   styleClass += "toolbar"
 
@@ -65,6 +68,47 @@ class BeadsToolbar(controller: ControllerInterface) extends VBox {
 
     onMouseClicked = (event: MouseEvent) => {
       controller.redo()
+    }
+  }
+
+  // Save + Load
+  val saveButton = new Button {
+    styleClass += "toolbarButton"
+
+    graphic = new ImageView {
+      image = new Image(
+        getClass
+          .getResource(
+            ("/scala/de/htwg/se/beads/aview/gui/assets/icons/save_FILL0_wght400_GRAD0_opsz24.png")
+          )
+          .toString()
+      )
+    }
+
+    tooltip = new Tooltip("Save")
+
+    onMouseClicked = (event: MouseEvent) => {
+      controller.save()
+    }
+  }
+
+  val loadButton = new Button {
+    styleClass += "toolbarButton"
+
+    graphic = new ImageView {
+      image = new Image(
+        getClass
+          .getResource(
+            ("/scala/de/htwg/se/beads/aview/gui/assets/icons/upload_file_FILL0_wght400_GRAD0_opsz24.png")
+          )
+          .toString()
+      )
+    }
+
+    tooltip = new Tooltip("Load")
+
+    onMouseClicked = (event: MouseEvent) => {
+      controller.load()
     }
   }
 
@@ -195,6 +239,8 @@ class BeadsToolbar(controller: ControllerInterface) extends VBox {
     children = Seq(
       undoButton,
       redoButton,
+      saveButton,
+      loadButton,
       new Separator {
         orientation = Orientation.Vertical
       },
@@ -232,5 +278,11 @@ class BeadsToolbar(controller: ControllerInterface) extends VBox {
   }
 
   setOrientation(Some(Orientation.Horizontal))
+
+  override def update(): Boolean = {
+    println(controller.gridStitch.toString())
+    stitchChoiceBox.value = controller.gridStitch.toString()
+    true
+  }
 
 }

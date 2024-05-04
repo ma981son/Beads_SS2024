@@ -1,0 +1,458 @@
+{
+  "temp" : {
+    "length" : 5,
+    "width" : 10,
+    "stitch" : "Brick",
+    "beads" : [ {
+      "row" : 0,
+      "col" : 0,
+      "color" : {
+        "red" : 255,
+        "green" : 0,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 0,
+      "col" : 1,
+      "color" : {
+        "red" : 255,
+        "green" : 255,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 0,
+      "col" : 2,
+      "color" : {
+        "red" : 0,
+        "green" : 128,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 0,
+      "col" : 3,
+      "color" : {
+        "red" : 0,
+        "green" : 0,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 0,
+      "col" : 4,
+      "color" : {
+        "red" : 255,
+        "green" : 0,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 0,
+      "col" : 5,
+      "color" : {
+        "red" : 255,
+        "green" : 255,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 0,
+      "col" : 6,
+      "color" : {
+        "red" : 0,
+        "green" : 0,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 0,
+      "col" : 7,
+      "color" : {
+        "red" : 255,
+        "green" : 0,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 0,
+      "col" : 8,
+      "color" : {
+        "red" : 255,
+        "green" : 255,
+        "blue" : 255,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 0,
+      "col" : 9,
+      "color" : {
+        "red" : 255,
+        "green" : 0,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 1,
+      "col" : 0,
+      "color" : {
+        "red" : 255,
+        "green" : 0,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 1,
+      "col" : 1,
+      "color" : {
+        "red" : 255,
+        "green" : 255,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 1,
+      "col" : 2,
+      "color" : {
+        "red" : 0,
+        "green" : 128,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 1,
+      "col" : 3,
+      "color" : {
+        "red" : 0,
+        "green" : 0,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 1,
+      "col" : 4,
+      "color" : {
+        "red" : 255,
+        "green" : 0,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 1,
+      "col" : 5,
+      "color" : {
+        "red" : 255,
+        "green" : 255,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 1,
+      "col" : 6,
+      "color" : {
+        "red" : 0,
+        "green" : 0,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 1,
+      "col" : 7,
+      "color" : {
+        "red" : 255,
+        "green" : 0,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 1,
+      "col" : 8,
+      "color" : {
+        "red" : 255,
+        "green" : 255,
+        "blue" : 255,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 1,
+      "col" : 9,
+      "color" : {
+        "red" : 255,
+        "green" : 0,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 2,
+      "col" : 0,
+      "color" : {
+        "red" : 255,
+        "green" : 0,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 2,
+      "col" : 1,
+      "color" : {
+        "red" : 255,
+        "green" : 255,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 2,
+      "col" : 2,
+      "color" : {
+        "red" : 0,
+        "green" : 128,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 2,
+      "col" : 3,
+      "color" : {
+        "red" : 0,
+        "green" : 0,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 2,
+      "col" : 4,
+      "color" : {
+        "red" : 255,
+        "green" : 0,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 2,
+      "col" : 5,
+      "color" : {
+        "red" : 255,
+        "green" : 255,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 2,
+      "col" : 6,
+      "color" : {
+        "red" : 0,
+        "green" : 0,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 2,
+      "col" : 7,
+      "color" : {
+        "red" : 255,
+        "green" : 0,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 2,
+      "col" : 8,
+      "color" : {
+        "red" : 255,
+        "green" : 255,
+        "blue" : 255,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 2,
+      "col" : 9,
+      "color" : {
+        "red" : 255,
+        "green" : 0,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 3,
+      "col" : 0,
+      "color" : {
+        "red" : 255,
+        "green" : 0,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 3,
+      "col" : 1,
+      "color" : {
+        "red" : 255,
+        "green" : 255,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 3,
+      "col" : 2,
+      "color" : {
+        "red" : 0,
+        "green" : 128,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 3,
+      "col" : 3,
+      "color" : {
+        "red" : 0,
+        "green" : 0,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 3,
+      "col" : 4,
+      "color" : {
+        "red" : 255,
+        "green" : 0,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 3,
+      "col" : 5,
+      "color" : {
+        "red" : 255,
+        "green" : 255,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 3,
+      "col" : 6,
+      "color" : {
+        "red" : 0,
+        "green" : 0,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 3,
+      "col" : 7,
+      "color" : {
+        "red" : 255,
+        "green" : 0,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 3,
+      "col" : 8,
+      "color" : {
+        "red" : 255,
+        "green" : 255,
+        "blue" : 255,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 3,
+      "col" : 9,
+      "color" : {
+        "red" : 255,
+        "green" : 0,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 4,
+      "col" : 0,
+      "color" : {
+        "red" : 255,
+        "green" : 0,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 4,
+      "col" : 1,
+      "color" : {
+        "red" : 255,
+        "green" : 255,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 4,
+      "col" : 2,
+      "color" : {
+        "red" : 0,
+        "green" : 128,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 4,
+      "col" : 3,
+      "color" : {
+        "red" : 0,
+        "green" : 0,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 4,
+      "col" : 4,
+      "color" : {
+        "red" : 255,
+        "green" : 0,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 4,
+      "col" : 5,
+      "color" : {
+        "red" : 255,
+        "green" : 255,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 4,
+      "col" : 6,
+      "color" : {
+        "red" : 0,
+        "green" : 0,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 4,
+      "col" : 7,
+      "color" : {
+        "red" : 255,
+        "green" : 0,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 4,
+      "col" : 8,
+      "color" : {
+        "red" : 255,
+        "green" : 255,
+        "blue" : 255,
+        "opacity" : 1
+      }
+    }, {
+      "row" : 4,
+      "col" : 9,
+      "color" : {
+        "red" : 255,
+        "green" : 0,
+        "blue" : 0,
+        "opacity" : 1
+      }
+    } ]
+  }
+}

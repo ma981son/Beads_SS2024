@@ -10,7 +10,8 @@ lazy val root = (project in file("."))
       "org.scalatest" %% "scalatest" % "3.2.10" % "test",
       "org.scalafx" %% "scalafx" % "20.0.0-R31",
       "org.scala-lang.modules" %% "scala-swing" % "3.0.0",
-      "net.codingwell" %% "scala-guice" % "7.0.0"
+      "net.codingwell" %% "scala-guice" % "7.0.0",
+      "org.playframework" %% "play-json" % "3.0.2"
     ),
     coverageEnabled := true
   )

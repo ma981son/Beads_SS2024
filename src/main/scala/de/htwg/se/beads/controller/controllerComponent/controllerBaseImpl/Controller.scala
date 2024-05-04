@@ -9,13 +9,16 @@ import de.htwg.se.beads.model.gridComponent.BeadInterface
 import com.google.inject.Inject
 import de.htwg.se.beads.BeadsModule
 import com.google.inject.Guice
+import de.htwg.se.beads.model.fileIOComponent.FileIOInterface
 
 class Controller @Inject() (var grid: GridInterface)
     extends Observable
     with ControllerInterface {
 
   private val undoManager: UndoManager = new UndoManager
+
   val injector = Guice.createInjector(new BeadsModule)
+  val fileIo = injector.getInstance(classOf[FileIOInterface])
 
   def gridLength: Int = grid.length
 
@@ -59,6 +62,16 @@ class Controller @Inject() (var grid: GridInterface)
 
   def redo(): Unit = {
     undoManager.redoStep()
+    notifyObservers()
+  }
+
+  def save(): Unit = {
+    fileIo.save(grid)
+    notifyObservers()
+  }
+
+  def load(): Unit = {
+    grid = fileIo.load
     notifyObservers()
   }
 }
