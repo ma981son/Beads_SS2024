@@ -1,16 +1,16 @@
-import de.htwg.se.beads.model.gridComponent.gridBaseImpl.Grid
-import de.htwg.se.beads.model.aview.{Tui}
+import de.htwg.se.beads_ui.gui.BeadsScene
+import de.htwg.se.beads_ui.gui.BeadsScene
+import de.htwg.se.beads_ui.Tui
+import de.htwg.se.beads_controller.BeadsModule
+import de.htwg.se.beads_controller.controller.controllerComponent.ControllerInterface
+import de.htwg.se.beads_ui.gui.BeadsScene
+import de.htwg.se.beads_ui.Tui
 import scala.io.StdIn.readLine
 import scalafx.application.JFXApp3
-import de.htwg.se.beads.aview.gui.BeadsScene
 import scala.io.AnsiColor._
 import scalafx.application.Platform
 import scalafx.scene.image.Image
-import de.htwg.se.beads.controller.controllerComponent.ControllerInterface
-import de.htwg.se.beads.controller.controllerComponent.controllerBaseImpl.Controller
 import com.google.inject.Guice
-import de.htwg.se.beads.BeadsModule
-import de.htwg.se.beads.util.Enums.Stitch
 
 object Beads_Object extends JFXApp3 {
 
@@ -26,7 +26,7 @@ object Beads_Object extends JFXApp3 {
       icons += new Image(
         getClass
           .getResource(
-            ("/scala/de/htwg/se/beads/aview/gui/assets/icons/filter_vintage_FILL0_wght400_GRAD0_opsz48.png")
+            "/assets/icons/filter_vintage_FILL0_wght500_GRAD0_opsz24.png"
           )
           .toString()
       )
