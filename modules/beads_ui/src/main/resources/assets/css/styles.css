@@ -15,39 +15,31 @@
 /* ScrollPane */
 .scroll-pane {
   -fx-background-color: transparent;
-  -fx-border-color: none; 
+  -fx-border-color: transparent; 
   -fx-border-width: 1px; 
-  background-color: transparent;
-  border-color: none; 
-  border-width: 1px; 
 }
 
 /* Scrollbars */
 .scroll-pane .scroll-bar {
   -fx-background-color: transparent;
-  background-color: transparent; 
 }
 
 .scroll-pane .scroll-bar .thumb {
   -fx-background-color: #a7a4a1; 
   -fx-border-radius: 20px;
-  -fx-border: 6px solid transparent;
-  background-color: #a7a4a1; 
-  border-radius: 20px;
-  border: 6px solid transparent;
+  -fx-border-width: 6px;
+  -fx-border-style: solid;
+  -fx-border-color: transparent;
 }
 
 .scroll-pane .corner {
-  -fx-background-color: transparent; 
-  background-color: transparent; 
+  -fx-background-color: transparent;
 }
 
 /* Bead Grid */ 
 .beadGrid {
   -fx-background-color: #eeeae6;
   -fx-border-radius: 50px;
-  background-color: #eeeae6;
-  border-radius: 50px;
 }
 
 /* Toolbar */ 
@@ -55,9 +47,6 @@
   -fx-background-color: #eeeae6;
   -fx-padding: 10px;
   -fx-border-radius: 50px;
-  background-color: #eeeae6;
-  padding: 10px;
-  border-radius: 50px;
 }
 
 /* Toolbar Buttons */ 
@@ -67,10 +56,6 @@
   -fx-border-radius: 50px;
   -fx-border-width: 0;
   -fx-mark-color: #3C3C3C;
-  background-color: #a7a4a1;
-  padding: 10px;
-  border-radius: 50px;
-  border-width: 0;
 }
 
 .toolbarButton:hover {
@@ -82,26 +67,20 @@
   -fx-font-size: 14px;
   -fx-font-weight: bold;
   -fx-text-fill:#3C3C3C;
-  font-family: "Courier New";
-  font-size: 14px;
-  font-weight: bold;
 }
 
 .toolbarButton .context-menu {
   -fx-background-color: #3C3C3C;
   -fx-text-fill: #e6e8ee;
-  background-color: #3C3C3C;
 }
 
 .toolbarButton .menu-item > .label { 
   -fx-font-family: "Courier New";
   -fx-text-fill: #e6e8ee;
-  font-family: "Courier New";
 }
 
 .toolbarButton .menu-item:focused { 
   -fx-background-color: #e6e8ee;
-  background-color: #e6e8ee;
 }
 
 .toolbarButton .menu-item:focused > .label {
@@ -115,14 +94,9 @@
   -fx-text-fill: #3C3C3C;
   -fx-background-color: #fffefd;
   -fx-padding: 10px;
-  -fx-border-radius: 50px;
-  -fx-border: 2px solid #a1a2a7;
-  font-family: "Courier New";
-  font-size: 14px;
-  background-color: #fffefd;
-  padding: 10px;
-  border-radius: 50px;
-  border: 2px solid #a1a2a7;
+  -fx-border-width: 2px;
+  -fx-border-style: solid;
+  -fx-border-color: #a1a2a7;
 }
 
 .textField:focused {
