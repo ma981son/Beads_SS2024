@@ -16,6 +16,7 @@ import scalafx.geometry.Orientation
 object BeadsScene {
 
   def createScene(controller: ControllerInterface): Scene = {
+
     val borderPane = new BorderPane
     val beadGrid = new BeadGrid(controller)
 

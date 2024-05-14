@@ -1,4 +1,4 @@
-package de.htwg.se.beads_ui
+package de.htwg.se.beads_ui.tui
 
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers

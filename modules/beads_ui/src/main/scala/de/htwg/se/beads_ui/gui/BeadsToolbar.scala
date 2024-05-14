@@ -23,6 +23,7 @@ import scalafx.scene.layout.Priority
 import scalafx.scene.control.Separator
 import scalafx.scene.text.Font
 import scalafx.scene.text.FontWeight
+import de.htwg.se.beads_util.Enums.Event
 
 class BeadsToolbar(controller: ControllerInterface) extends VBox with Observer {
 
@@ -283,10 +284,11 @@ class BeadsToolbar(controller: ControllerInterface) extends VBox with Observer {
 
   setOrientation(Some(Orientation.Horizontal))
 
-  override def update(): Boolean = {
-    println(controller.gridStitch.toString())
-    stitchChoiceBox.value = controller.gridStitch.toString()
-    true
+  override def update(e: Event): Unit = {
+    e match {
+      case Event.GRID =>
+        stitchChoiceBox.value = controller.gridStitch.toString()
+    }
   }
 
 }

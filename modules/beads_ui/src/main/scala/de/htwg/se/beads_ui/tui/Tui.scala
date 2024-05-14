@@ -1,4 +1,4 @@
-package de.htwg.se.beads_ui
+package de.htwg.se.beads_ui.tui
 
 import de.htwg.se.beads_controller.controller.controllerComponent.ControllerInterface
 import de.htwg.se.beads_util.util.Observer
@@ -10,6 +10,7 @@ import de.htwg.se.beads_util.Enums.{
 }
 import scala.io.StdIn.readLine
 import scala.io.AnsiColor.WHITE
+import de.htwg.se.beads_util.Enums.Event
 
 class Tui(controller: ControllerInterface) extends Observer {
 
@@ -154,8 +155,8 @@ class Tui(controller: ControllerInterface) extends Observer {
     }
   }
 
-  override def update(): Boolean = {
-    println(controller.GridToString)
-    true
+  override def update(e: Event): Unit = {
+    e match
+      case Event.GRID => println(controller.gridToString)
   }
 }

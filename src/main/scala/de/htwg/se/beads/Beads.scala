@@ -1,72 +1,20 @@
 import de.htwg.se.beads_ui.gui.BeadsScene
 import de.htwg.se.beads_ui.gui.BeadsScene
-import de.htwg.se.beads_ui.Tui
 import de.htwg.se.beads_controller.BeadsModule
 import de.htwg.se.beads_controller.controller.controllerComponent.ControllerInterface
 import de.htwg.se.beads_ui.gui.BeadsScene
-import de.htwg.se.beads_ui.Tui
-import scala.io.StdIn.readLine
-import scalafx.application.JFXApp3
-import scala.io.AnsiColor._
-import scalafx.application.Platform
-import scalafx.scene.image.Image
-import com.google.inject.Guice
 
-object Beads_Object extends JFXApp3 {
+import scala.concurrent.ExecutionContext
+import de.htwg.se.beads_controller.controller.BeadsControllerAPIModule
+import de.htwg.se.beads_ui.tui.Tui
+import de.htwg.se.beads_ui.UIRestModule
+import de.htwg.se.beads_ui.UIModule
 
-  override def start(): Unit = {
+object Beads_Object {
 
-    val injector = Guice.createInjector(new BeadsModule)
-
-    val controller = injector.getInstance(classOf[ControllerInterface])
-
-    // GUI
-    val stage = new JFXApp3.PrimaryStage {
-      title = "Beads"
-      icons += new Image(
-        getClass
-          .getResource(
-            "/assets/icons/filter_vintage_FILL0_wght500_GRAD0_opsz24.png"
-          )
-          .toString()
-      )
-      scene = BeadsScene.createScene(controller)
-    }
-    Platform.runLater {
-      stage.show()
-      controller.notifyObservers()
-    }
-
-    // TUI
-    new Thread(() => {
-      val tui = new Tui(controller)
-      controller.notifyObservers()
-
-      var input: String = ""
-      var inputSize: String = ""
-      println("Change color: x-coord y-coord color")
-      println("Change Grid size: size row-number col-number")
-      println("Change Grid stitch: stitch stitch-name")
-      println("Change Grid color: fill color")
-      println("Create new Template: n")
-      println("Undo: z")
-      println("Undo: y")
-      println("Available Colors:")
-      print(
-        s"${BLACK}black${RESET}, ${RED}red${RESET}, ${GREEN}green${RESET}, "
-      )
-      print(
-        s"${YELLOW}yellow${RESET}, ${BLUE}blue${RESET}, ${MAGENTA}magenta${RESET}, "
-      )
-      print(s"${CYAN}cyan${RESET}, ${WHITE}white${RESET}\n")
-      print("Enter Template length, width, and stitch: ")
-      inputSize = scala.io.StdIn.readLine()
-      tui.processInputSizeLine(inputSize)
-
-      while (input != "q") {
-        input = scala.io.StdIn.readLine()
-        tui.processInputLine(input)
-      }
-    }).start()
+  def main(args: Array[String]): Unit = {
+    BeadsControllerAPIModule
+    UIModule
+    // UIRestModule
   }
 }

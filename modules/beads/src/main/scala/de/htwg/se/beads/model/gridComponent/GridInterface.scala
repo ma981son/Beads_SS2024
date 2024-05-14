@@ -3,6 +3,8 @@ package de.htwg.se.beads.model.gridComponent
 import de.htwg.se.beads_util.Enums.Stitch
 import de.htwg.se.beads.model.gridComponent.gridBaseImpl.{Bead, BeadVector}
 import scalafx.scene.paint.Color
+import play.api.libs.json.JsValue
+import de.htwg.se.beads.model.gridComponent.gridBaseImpl.Coord
 
 trait GridInterface {
   def length: Int
@@ -30,9 +32,12 @@ trait GridInterface {
   def col(col: Int): BeadVector
 
   def toString: String
+
 }
 
 trait BeadInterface {
+  def beadCoord: Coord
+
   def isColored: Boolean
 
   def beadColor: Color

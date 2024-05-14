@@ -8,6 +8,9 @@ import play.api.libs.json._
 import scala.io.Source
 import com.google.inject.Guice
 import scalafx.scene.paint.Color
+import de.htwg.se.beads.model.gridComponent.BeadInterface
+import de.htwg.se.beads.model.gridComponent.gridBaseImpl.Bead
+import de.htwg.se.beads.model.gridComponent.gridBaseImpl.Coord
 
 class FileIO() extends FileIOInterface {
 
@@ -18,8 +21,6 @@ class FileIO() extends FileIOInterface {
     val length = (json \ "temp" \ "length").as[Int]
     val width = (json \ "temp" \ "width").as[Int]
     val stitch = (json \ "temp" \ "stitch").as[String]
-
-    println(stitch.toLowerCase()) // TODO:Remove
 
     var grid = new Grid(
       length,
@@ -42,11 +43,67 @@ class FileIO() extends FileIOInterface {
   override def save(grid: GridInterface): Unit = {
     import java.io._
     val pw = new PrintWriter(new File("temp.json"))
-    pw.write(Json.prettyPrint(tempToJson(grid)))
+    pw.write(Json.prettyPrint(gridToJson(grid)))
     pw.close
   }
 
-  implicit val beadWrites: Writes[Color] = new Writes[Color] {
+  override def gridToJson(grid: GridInterface): JsValue = {
+    Json.obj(
+      "temp" -> Json.obj(
+        "length" -> JsNumber(grid.length),
+        "width" -> JsNumber(grid.width),
+        "stitch" -> JsString(grid.stitch.toString()),
+        "beads" -> Json.toJson(
+          for {
+            row <- 0 until grid.length;
+            col <- 0 until grid.width
+          } yield {
+            beadToJson(grid.bead(row, col))
+          }
+        )
+      )
+    )
+  }
+
+  override def jsonToGrid(json: JsValue): Grid = {
+    val length = (json \ "temp" \ "length").as[Int]
+    val width = (json \ "temp" \ "width").as[Int]
+    val stitch = (json \ "temp" \ "stitch").as[String]
+
+    var grid = new Grid(
+      length,
+      width,
+      Color.Black,
+      StitchConverter.stringToStitch
+        .getOrElse(stitch.toLowerCase(), Stitch.Square)
+    )
+
+    (json \ "temp" \ "beads").as[List[JsObject]].foreach { beadJson =>
+      val row = (beadJson \ "row").as[Int]
+      val col = (beadJson \ "col").as[Int]
+      val color = (beadJson \ "color").as[Color]
+      grid = grid.setBeadColor(row, col, color)
+    }
+
+    grid
+  }
+
+  override def beadToJson(bead: BeadInterface): JsValue = {
+    Json.obj(
+      "row" -> bead.beadCoord.x,
+      "col" -> bead.beadCoord.y,
+      "color" -> Json.toJson(bead.beadColor)
+    )
+  }
+
+  override def jsonToBead(json: JsValue): BeadInterface = {
+    val row = (json \ "row").as[Int]
+    val col = (json \ "col").as[Int]
+    val color = (json \ "color").as[Color]
+    Bead(Coord(row, col), color)
+  }
+
+  implicit val colorWrites: Writes[Color] = new Writes[Color] {
     def writes(color: Color) = Json.obj(
       "red" -> (color.getRed() * 255).toInt,
       "green" -> (color.getGreen() * 255).toInt,
@@ -55,7 +112,7 @@ class FileIO() extends FileIOInterface {
     )
   }
 
-  implicit val beadReads: Reads[Color] = new Reads[Color] {
+  implicit val colorReads: Reads[Color] = new Reads[Color] {
     def reads(json: JsValue): JsResult[Color] = {
       val colorResult = for {
         red <- (json \ "red").validate[Int]
@@ -68,28 +125,6 @@ class FileIO() extends FileIOInterface {
 
       colorResult
     }
-  }
-
-  def tempToJson(grid: GridInterface) = {
-    Json.obj(
-      "temp" -> Json.obj(
-        "length" -> JsNumber(grid.length),
-        "width" -> JsNumber(grid.width),
-        "stitch" -> JsString(grid.stitch.toString()),
-        "beads" -> Json.toJson(
-          for {
-            row <- 0 until grid.length;
-            col <- 0 until grid.width
-          } yield {
-            Json.obj(
-              "row" -> row,
-              "col" -> col,
-              "color" -> Json.toJson(grid.bead(row, col).beadColor)
-            )
-          }
-        )
-      )
-    )
   }
 
 }

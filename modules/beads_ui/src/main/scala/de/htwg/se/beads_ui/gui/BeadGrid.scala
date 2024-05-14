@@ -13,6 +13,7 @@ import scalafx.scene.layout.FlowPane
 import scalafx.geometry.Pos
 import scalafx.scene.layout.StackPane
 import scalafx.scene.layout.Border
+import de.htwg.se.beads_util.Enums.Event
 
 class BeadGrid(controller: ControllerInterface)
     extends StackPane
@@ -32,12 +33,14 @@ class BeadGrid(controller: ControllerInterface)
   children = zoomableScrollPane
   margin = inset
 
-  override def update(): Boolean = {
+  override def update(e: Event): Unit = {
+    println("UPDATE  " + controller.getClass.getName())
     Platform.runLater(() => {
-      mainVBox.children.clear()
-      generateButtons()
+      e.match
+        case Event.GRID =>
+          mainVBox.children.clear()
+          generateButtons()
     })
-    true
   }
 
   private def generateButtons(): Unit = {

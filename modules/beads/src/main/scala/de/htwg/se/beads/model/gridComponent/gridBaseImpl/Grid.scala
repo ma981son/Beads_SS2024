@@ -5,7 +5,13 @@ import de.htwg.se.beads_util.Enums.{Stitch, DefaultColors}
 import scalafx.scene.paint.Color
 import com.google.inject.Inject
 import com.google.inject.name.Named
+import play.api.libs.json.JsValue
+import de.htwg.se.beads_util.Enums.StitchConverter
+import play.api.libs.json.JsObject
+import play.api.libs.json.Reads
+import play.api.libs.json.JsResult
 
+//noinspection DuplicatedCode
 case class Grid @Inject() (beads: Matrix) extends GridInterface {
 
   def this(
@@ -102,4 +108,5 @@ case class Grid @Inject() (beads: Matrix) extends GridInterface {
   override def toString: String = {
     String.strategy
   }
+
 }

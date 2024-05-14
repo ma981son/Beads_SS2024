@@ -10,6 +10,8 @@ import de.htwg.se.beads.model.fileIOComponent.FileIOInterface
 import com.google.inject.Inject
 import com.google.inject.Guice
 import scalafx.scene.paint.Color
+import play.api.libs.json.JsValue
+import de.htwg.se.beads_util.Enums.Event
 
 class Controller @Inject() (var grid: GridInterface)
     extends Observable
@@ -28,50 +30,55 @@ class Controller @Inject() (var grid: GridInterface)
 
   def bead(row: Int, col: Int): BeadInterface = { grid.bead(row, col) }
 
+  def beadToJson(row: Int, col: Int): JsValue =
+    fileIo.beadToJson(bead(row, col))
+
   def createEmptyGrid(length: Int, width: Int, stitch: Stitch): Unit = {
     undoManager.doStep(CreateGridCommand(length, width, stitch, this))
-    notifyObservers()
+    notifyObservers(Event.GRID)
   }
 
   def setBeadColor(row: Int, col: Int, color: Color): Unit = {
     undoManager.doStep(SetBeadColorCommand(row, col, color, this))
-    notifyObservers()
+    notifyObservers(Event.GRID)
   }
 
   def changeGridSize(length: Int, width: Int): Unit = {
     undoManager.doStep(ChangeGridSizeCommand(length, width, this))
-    notifyObservers()
+    notifyObservers(Event.GRID)
   }
 
   def changeGridStitch(stitch: Stitch): Unit = {
     undoManager.doStep(ChangeGridStitchCommand(stitch, this))
-    notifyObservers()
+    notifyObservers(Event.GRID)
   }
 
   def fillGrid(color: Color): Unit = {
     undoManager.doStep(FillGridCommand(color, this))
-    notifyObservers()
+    notifyObservers(Event.GRID)
   }
 
-  def GridToString: String = grid.toString()
+  def gridToString: String = grid.toString()
+
+  def gridToJson: JsValue = fileIo.gridToJson(grid)
 
   def undo(): Unit = {
     undoManager.undoStep()
-    notifyObservers()
+    notifyObservers(Event.GRID)
   }
 
   def redo(): Unit = {
     undoManager.redoStep()
-    notifyObservers()
+    notifyObservers(Event.GRID)
   }
 
   def save(): Unit = {
     fileIo.save(grid)
-    notifyObservers()
+    notifyObservers(Event.GRID)
   }
 
   def load(): Unit = {
     grid = fileIo.load
-    notifyObservers()
+    notifyObservers(Event.GRID)
   }
 }

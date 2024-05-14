@@ -4,6 +4,7 @@ import de.htwg.se.beads_util.util.Observable
 import de.htwg.se.beads_util.Enums.Stitch
 import de.htwg.se.beads.model.gridComponent.BeadInterface
 import scalafx.scene.paint.Color
+import play.api.libs.json.JsValue
 
 trait ControllerInterface extends Observable {
   def gridLength: Int
@@ -12,11 +13,13 @@ trait ControllerInterface extends Observable {
 
   def gridStitch: Stitch
 
-  def bead(row: Int, col: Int): BeadInterface
-
   def createEmptyGrid(length: Int, width: Int, stitch: Stitch): Unit
 
-  def setBeadColor(row: Int, width: Int, color: Color): Unit
+  def bead(row: Int, col: Int): BeadInterface
+
+  def beadToJson(row: Int, col: Int): JsValue
+
+  def setBeadColor(row: Int, col: Int, color: Color): Unit
 
   def changeGridSize(length: Int, width: Int): Unit
 
@@ -24,7 +27,9 @@ trait ControllerInterface extends Observable {
 
   def fillGrid(color: Color): Unit
 
-  def GridToString: String
+  def gridToString: String
+
+  def gridToJson: JsValue
 
   def undo(): Unit
 
