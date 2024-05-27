@@ -34,7 +34,6 @@ class BeadGrid(controller: ControllerInterface)
   margin = inset
 
   override def update(e: Event): Unit = {
-    println("UPDATE  " + controller.getClass.getName())
     Platform.runLater(() => {
       e.match
         case Event.GRID =>

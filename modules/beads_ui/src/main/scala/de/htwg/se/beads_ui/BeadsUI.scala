@@ -22,8 +22,6 @@ class BeadsUI(using controller: ControllerInterface) extends JFXApp3 {
 
   override def start(): Unit = {
 
-    println("CONTROLLER CLASS NAME; " + controller.getClass.getName())
-
     // GUI
     val stage = new JFXApp3.PrimaryStage {
       title = "Beads"

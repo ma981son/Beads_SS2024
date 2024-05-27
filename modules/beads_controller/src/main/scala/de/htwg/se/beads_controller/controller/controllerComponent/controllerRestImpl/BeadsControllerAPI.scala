@@ -25,8 +25,6 @@ import de.htwg.se.beads_util.Enums.ColorConverter.rgbaToColor
 
 class BeadsControllerAPI(using controller: ControllerInterface) {
 
-  println("CONTROLLER " + controller.getClass.getName())
-
   implicit val system: ActorSystem[Nothing] =
     ActorSystem(Behaviors.empty, "BeadsControllerAPI")
   implicit val executionContext: ExecutionContext = system.executionContext
