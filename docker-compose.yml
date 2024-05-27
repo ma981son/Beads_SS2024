@@ -1,0 +1,17 @@
+services:
+
+  controller:
+    image: beads_controller:0.1.0-SNAPSHOT
+    ports:
+      - "3000:3000"
+    network_mode: "host"
+
+  ui:
+    image: beads_ui:0.1.0-SNAPSHOT
+    depends_on:
+      - controller
+    environment:
+      - DISPLAY=host.docker.internal:0
+    stdin_open: true
+    tty: true
+    network_mode: "host"
