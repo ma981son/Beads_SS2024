@@ -1,4 +1,4 @@
-package de.htwg.se.beads_controller.controller.controllerComponent.controllerRestImpl
+package de.htwg.se.beads_controller.controller.controllerComponent
 
 import akka.stream.scaladsl._
 import akka.http.scaladsl.server.Directives._
@@ -22,12 +22,27 @@ import de.htwg.se.beads_controller.controller.controllerComponent.ControllerInte
 import de.htwg.se.beads_util.Enums.StitchConverter
 import de.htwg.se.beads_util.Enums.Stitch
 import de.htwg.se.beads_util.Enums.ColorConverter.rgbaToColor
+import scala.concurrent.Await
+import scala.concurrent.duration.*
+import akka.http.scaladsl.model.HttpMethods
+import akka.http.scaladsl.unmarshalling.Unmarshal
+import de.htwg.se.beads_util.util.Observer
+import de.htwg.se.beads_util.Enums.Event
+import akka.http.scaladsl.model.HttpMethod
+import de.htwg.se.beads.model.fileIOComponent.fileIoJsonImpl.FileIO
 
 class BeadsControllerAPI(using controller: ControllerInterface) {
+
+  private val persistenceServiceEndpoint =
+    "http://persistence:3001/persistence"
+
+  private val fileIO = new FileIO
 
   implicit val system: ActorSystem[Nothing] =
     ActorSystem(Behaviors.empty, "BeadsControllerAPI")
   implicit val executionContext: ExecutionContext = system.executionContext
+
+  controller.add(DB_UpdateObserver)
 
   val routes: Route =
     concat(
@@ -39,7 +54,9 @@ class BeadsControllerAPI(using controller: ControllerInterface) {
       get {
         path("controller" / Segment) { command =>
           command match {
-            case "grid" => completeWithData(controller.gridToJson.toString)
+            case "grid" =>
+              println("Controller: " + controller)
+              completeWithData(Json.prettyPrint(controller.gridToJson))
             case "gridString" => completeWithData(controller.gridToString)
             case "gridLength" =>
               completeWithData(controller.gridLength.toString())
@@ -49,16 +66,27 @@ class BeadsControllerAPI(using controller: ControllerInterface) {
               completeWithData(controller.gridStitch.toString())
             case "undo" =>
               controller.undo()
-              completeWithData(controller.gridToJson.toString)
+              completeWithData(Json.prettyPrint(controller.gridToJson))
             case "redo" =>
               controller.redo()
-              completeWithData(controller.gridToJson.toString)
+              completeWithData(Json.prettyPrint(controller.gridToJson))
             case "save" =>
-              controller.save()
-              completeWithData(controller.gridToJson.toString)
+              save match {
+                case Success(_) =>
+                  completeWithData("success")
+                case Failure(exception) =>
+                  println(s"Request failed: ${exception}")
+                  failWith(exception)
+              }
             case "load" =>
-              controller.load()
-              completeWithData(controller.gridToJson.toString)
+              load match {
+                case Success(json) =>
+                  controller.grid = fileIO.jsonToGrid(json)
+                  completeWithData(controller.gridToJson.toString)
+                case Failure(exception) =>
+                  println(s"Request failed: ${exception}")
+                  failWith(exception)
+              }
           }
         }
       },
@@ -134,11 +162,67 @@ class BeadsControllerAPI(using controller: ControllerInterface) {
     )
   }
 
+  private def save: Try[Unit] = {
+    val saveRequest = Http().singleRequest(
+      HttpRequest(
+        uri = s"$persistenceServiceEndpoint/save",
+        method = HttpMethods.POST,
+        entity = HttpEntity(
+          ContentTypes.`application/json`,
+          controller.gridToJson.toString
+        )
+      )
+    )
+
+    val responseJsonFuture = saveRequest.flatMap { response =>
+      Unmarshal(response.entity).to[String].map { jsonString =>
+        Json.parse(jsonString)
+      }
+    }
+
+    Try {
+      println(
+        s"Sending Beads_DB save request to $persistenceServiceEndpoint/persistence/save"
+      )
+      val jsonResponse = Await.result(responseJsonFuture, 10.seconds)
+      (jsonResponse \ "status").as[String] match {
+        case "Grid Saved" => println(s"Grid was successfully saved")
+        case _ =>
+          throw new Exception("Unexpected response from persistence service")
+      }
+    }
+  }
+
+  def load: Try[JsValue] = {
+    val loadRequest = Http().singleRequest(
+      HttpRequest(
+        uri = s"$persistenceServiceEndpoint/load",
+        method = HttpMethods.GET
+      )
+    )
+
+    val responseJsonFuture = loadRequest.flatMap { response =>
+      Unmarshal(response.entity).to[String].map { jsonString =>
+        Json.parse(jsonString)
+      }
+    }
+
+    Try {
+      println(
+        s"Sending Beads_DB load request to $persistenceServiceEndpoint/load"
+      )
+      Await.result(responseJsonFuture, 10.seconds)
+    }
+  }
+
   def start(): Unit = {
-    val binding = Http().newServerAt("localhost", 3000).bind(routes)
+    val binding = Http().newServerAt("0.0.0.0", 3000).bind(routes)
 
     binding.onComplete {
       case Success(serverBinding) =>
+        println(
+          "BeadsControllerAPI connected successfully at http://localhost:3000/"
+        )
         complete(status = 200, serverBinding.toString())
       case Failure(exception) =>
         complete(status = 500, exception.getMessage)
@@ -147,5 +231,31 @@ class BeadsControllerAPI(using controller: ControllerInterface) {
 
   def stop(): Unit = {
     system.terminate()
+  }
+
+  object DB_UpdateObserver extends Observer {
+    override def update(e: Event): Unit = {
+      val updateRequest = Http().singleRequest(
+        HttpRequest(
+          uri = s"$persistenceServiceEndpoint/update",
+          method = HttpMethods.POST,
+          entity = HttpEntity(
+            ContentTypes.`application/json`,
+            controller.gridToJson.toString
+          )
+        )
+      )
+      val responseJsonFuture = updateRequest.flatMap { response =>
+        Unmarshal(response.entity).to[String].map { jsonString =>
+          Json.parse(jsonString)
+        }
+      }
+
+      e match
+        case Event.GRID =>
+          Try {
+            Await.result(responseJsonFuture, 300.seconds)
+          }.map(_ => ())
+    }
   }
 }

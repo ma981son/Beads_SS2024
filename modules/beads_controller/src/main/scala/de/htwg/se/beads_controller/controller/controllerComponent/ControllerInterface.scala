@@ -5,8 +5,11 @@ import de.htwg.se.beads_util.Enums.Stitch
 import de.htwg.se.beads.model.gridComponent.BeadInterface
 import scalafx.scene.paint.Color
 import play.api.libs.json.JsValue
+import de.htwg.se.beads.model.gridComponent.GridInterface
 
 trait ControllerInterface extends Observable {
+  var grid: GridInterface
+
   def gridLength: Int
 
   def gridWidth: Int

@@ -42,7 +42,7 @@ class RestController @Inject() (
   val injector = Guice.createInjector(new BeadsModule)
   val fileIo = injector.getInstance(classOf[FileIOInterface])
 
-  private val restControllerUrl = "http://localhost:3000/controller"
+  private val restControllerUrl = "http://controller:3000/controller"
 
   var grid: GridInterface = injector.getInstance(classOf[GridInterface])
   gridRequest(restControllerUrl, "grid", HttpMethods.GET)
@@ -54,6 +54,9 @@ class RestController @Inject() (
       method: HttpMethod,
       data: Option[JsValue] = None
   ): Unit = {
+    println(
+      s"Sending request to $endpoint/$command with data: $data"
+    ) // TODO : REMOVE
 
     val response =
       httpService
@@ -66,6 +69,7 @@ class RestController @Inject() (
         errorMsg = None
         notifyObservers(Event.GRID)
       case Failure(exception) =>
+        println(s"Request failed: ${exception.getMessage}")
         errorMsg = Some(exception.getMessage)
         notifyObservers(Event.GRID)
     }
@@ -251,7 +255,6 @@ class RestController @Inject() (
   }
 
   override def load(): Unit = {
-
     gridRequest(restControllerUrl, "load", HttpMethods.GET)
     notifyObservers(Event.GRID)
   }

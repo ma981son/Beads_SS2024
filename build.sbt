@@ -20,14 +20,16 @@ lazy val commonSettings = Seq(
     "com.typesafe.akka" %% "akka-actor-typed" % AkkaVersion,
     "com.typesafe.akka" %% "akka-stream" % AkkaVersion,
     "com.typesafe.akka" %% "akka-http" % AkkaHttpVersion,
-    "com.typesafe.akka" %% "akka-http-spray-json" % AkkaHttpVersion
+    "com.typesafe.akka" %% "akka-http-spray-json" % AkkaHttpVersion,
+    "com.typesafe.slick" %% "slick" % "3.5.1",
+    "com.typesafe.slick" %% "slick-hikaricp" % "3.5.1",
+    "org.postgresql" % "postgresql" % "42.2.20"
   )
 )
 
 lazy val dockerSettings = Seq(
   dockerLabels := Map("version" -> version.value),
   dockerExposedVolumes := Seq("/opt/docker"),
-  dockerExposedPorts := Seq(3000),
   dockerChmodType := DockerChmodType.UserGroupWriteExecute,
   dockerUpdateLatest := true,
   Docker / daemonUserUid := None,
@@ -41,8 +43,14 @@ lazy val root = (project in file("."))
     commonSettings,
     coverageEnabled := true
   )
-  .dependsOn(beads, controller, ui, util)
-  .aggregate(beads, controller, ui, util)
+  .dependsOn(
+    beads % "compile->compile",
+    controller % "compile->compile",
+    ui % "compile->compile",
+    util % "compile->compile",
+    persistence % "compile->compile"
+  )
+  .aggregate(beads, controller, ui, util, persistence)
 
 lazy val beads = project
   .in(file("./modules/beads"))
@@ -51,7 +59,7 @@ lazy val beads = project
     name := "Beads",
     commonSettings
   )
-  .dependsOn(util)
+  .dependsOn(util % "compile->compile")
 
 lazy val controller = project
   .in(file("./modules/beads_controller"))
@@ -63,9 +71,10 @@ lazy val controller = project
     Compile / mainClass := Some(
       "de.htwg.se.beads_controller.Beads_Controller_Main"
     ),
+    dockerExposedPorts := Seq(3000),
     dockerSettings
   )
-  .dependsOn(beads, util)
+  .dependsOn(beads % "compile->compile", util % "compile->compile")
 
 lazy val ui = project
   .in(file("./modules/beads_ui"))
@@ -81,12 +90,10 @@ lazy val ui = project
         "apt-get install -y libxrender1 libxtst6 libxi6 libgl1-mesa-glx libgtk-3-0 openjfx libgl1-mesa-dri libgl1-mesa-dev libcanberra-gtk-module libcanberra-gtk3-module default-jdk"
       )
     ),
-    Compile / mainClass := Some(
-      "de.htwg.se.beads_ui.Beads_UI_Main"
-    ),
+    Compile / mainClass := Some("de.htwg.se.beads_ui.Beads_UI_Main"),
     dockerSettings
   )
-  .dependsOn(controller, util)
+  .dependsOn(controller % "compile->compile", util % "compile->compile")
 
 lazy val util = project
   .in(file("./modules/beads_util"))
@@ -95,3 +102,18 @@ lazy val util = project
     name := "Beads_Util",
     commonSettings
   )
+
+lazy val persistence = project
+  .in(file("./modules/beads_persistence"))
+  .enablePlugins(DockerCompose, JavaAppPackaging)
+  .settings(
+    name := "Beads_Persistence",
+    commonSettings,
+    dockerBaseImage := "hseeberger/scala-sbt:17.0.2_1.6.2_3.1.1",
+    Compile / mainClass := Some(
+      "de.htwg.se.beads_persistence.Beads_Persistence_Main"
+    ),
+    dockerExposedPorts := Seq(3001),
+    dockerSettings
+  )
+  .dependsOn(beads % "compile->compile")

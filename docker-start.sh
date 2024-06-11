@@ -18,9 +18,10 @@ if [ -n "$uiContainerId" ] && [ "$(docker inspect --format '{{.State.Status}}' "
     echo "UI container is already running."
     docker-compose restart ui
 else
-    # Step 2: Build the Docker images if containers are not running
+    # Step 2: Build the Docker images
     echo "Building Docker images..."
     sbt controller/docker:publishLocal
+    sbt persistence/docker:publishLocal
     sbt ui/docker:publishLocal
 
     # Step 3: Start the Docker Compose stack

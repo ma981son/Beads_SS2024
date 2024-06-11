@@ -4,7 +4,8 @@ services:
     image: beads_controller:0.1.0-SNAPSHOT
     ports:
       - "3000:3000"
-    network_mode: "host"
+    networks:
+      - beads_network
 
   ui:
     image: beads_ui:0.1.0-SNAPSHOT
@@ -14,4 +15,36 @@ services:
       - DISPLAY=host.docker.internal:0
     stdin_open: true
     tty: true
-    network_mode: "host"
+    networks:
+      - beads_network
+
+  persistence:
+    image: beads_persistence:0.1.0-SNAPSHOT
+    ports:
+      - "3001:3001"
+    depends_on:
+      - postgres_db
+    networks:
+      - beads_network
+
+  postgres_db:
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: beads_postgres_password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: beads_postgres_db
+      POSTGRES_HOST: database
+      POSTGRES_PORT: 5432
+    restart: always
+    ports:
+      - "5432:5432"
+    networks:
+      - beads_network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  beads_network:

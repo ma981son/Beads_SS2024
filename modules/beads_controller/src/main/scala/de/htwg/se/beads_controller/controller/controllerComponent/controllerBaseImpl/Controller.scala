@@ -13,15 +13,14 @@ import scalafx.scene.paint.Color
 import play.api.libs.json.JsValue
 import de.htwg.se.beads_util.Enums.Event
 
-class Controller @Inject() (var grid: GridInterface)
-    extends Observable
-    with ControllerInterface {
+class Controller @Inject() () extends Observable with ControllerInterface {
 
   private val undoManager: UndoManager = new UndoManager
 
   val injector = Guice.createInjector(new BeadsModule)
   val fileIo = injector.getInstance(classOf[FileIOInterface])
 
+  var grid: GridInterface = injector.getInstance(classOf[GridInterface])
   def gridLength: Int = grid.length
 
   def gridWidth: Int = grid.width

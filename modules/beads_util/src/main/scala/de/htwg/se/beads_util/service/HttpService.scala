@@ -48,7 +48,7 @@ class HttpService {
     }
 
     Try {
-      Await.result(responseJsonFuture, 5.seconds)
+      Await.result(responseJsonFuture, 10.seconds)
     }
   }
 }
