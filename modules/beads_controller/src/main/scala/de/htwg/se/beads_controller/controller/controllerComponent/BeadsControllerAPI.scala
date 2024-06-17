@@ -83,7 +83,7 @@ class BeadsControllerAPI(using controller: ControllerInterface) {
                   complete(
                     HttpEntity(
                       ContentTypes.`application/json`,
-                      Json.toJson(seqJson).toString()
+                      Json.prettyPrint(Json.toJson(seqJson))
                     )
                   )
                 case Failure(exception) =>
@@ -98,7 +98,7 @@ class BeadsControllerAPI(using controller: ControllerInterface) {
           load(id) match {
             case Success(json) =>
               controller.grid = fileIO.jsonToGrid(json)
-              completeWithData(controller.gridToJson.toString)
+              completeWithData(Json.prettyPrint(controller.gridToJson))
             case Failure(exception) =>
               println(s"Request failed: ${exception}")
               failWith(exception)
