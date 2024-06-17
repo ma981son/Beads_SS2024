@@ -109,7 +109,8 @@ class BeadsToolbar(controller: ControllerInterface) extends VBox with Observer {
     tooltip = new Tooltip("Load")
 
     onMouseClicked = (event: MouseEvent) => {
-      controller.load()
+      // new BeadsSavedGridsStage(controller) TODO: Add selection to save multiple Grids
+      controller.load(1)
     }
   }
 

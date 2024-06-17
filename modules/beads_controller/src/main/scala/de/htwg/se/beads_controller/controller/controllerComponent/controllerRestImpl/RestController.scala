@@ -33,6 +33,7 @@ import de.htwg.se.beads.model.gridComponent.gridBaseImpl.Bead
 import de.htwg.se.beads_util.util.Observable
 import de.htwg.se.beads_util.Enums.Event
 import org.checkerframework.checker.units.qual.s
+import slick.dbio.SuccessAction
 
 class RestController @Inject() (
     httpService: HttpService = HttpService()
@@ -56,7 +57,7 @@ class RestController @Inject() (
   ): Unit = {
     println(
       s"Sending request to $endpoint/$command with data: $data"
-    ) // TODO : REMOVE
+    )
 
     val response =
       httpService
@@ -69,7 +70,7 @@ class RestController @Inject() (
         errorMsg = None
         notifyObservers(Event.GRID)
       case Failure(exception) =>
-        println(s"Request failed: ${exception.getMessage}")
+        println(s"Request failed: ${exception}")
         errorMsg = Some(exception.getMessage)
         notifyObservers(Event.GRID)
     }
@@ -251,11 +252,36 @@ class RestController @Inject() (
       "save",
       HttpMethods.GET
     )
-    notifyObservers(Event.GRID)
   }
 
-  override def load(): Unit = {
-    gridRequest(restControllerUrl, "load", HttpMethods.GET)
-    notifyObservers(Event.GRID)
+  override def load(id: Int): Unit = {
+    gridRequest(restControllerUrl, s"load/$id", HttpMethods.GET)
+  }
+
+  override def loadAll(): Seq[JsValue] = {
+    httpService.request(
+      restControllerUrl,
+      s"loadAll",
+      HttpMethods.GET
+    ) match {
+      case Success(response) =>
+        response.validate[JsArray] match {
+          case JsSuccess(jsArray, _) => jsArray.value.toSeq
+          case JsError(error) =>
+            println(s"Failed to parse JSON array: $error")
+            Seq.empty[JsValue]
+        }
+      case Failure(exception) =>
+        println(s"Request failed: ${exception}")
+        Seq.empty[JsValue]
+    }
+  }
+
+  override def delete(id: Int): Unit = {
+    httpService.request(
+      restControllerUrl,
+      s"delete/$id",
+      HttpMethods.GET
+    )
   }
 }

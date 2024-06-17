@@ -21,8 +21,7 @@ import de.htwg.se.beads_persistence.database.slick.tables.JsonImplicits._
 object BeadsSlickDB extends DAO_Interface {
 
   private val connectionRetryAttempts = 5
-  private val maxWaitSeconds = 5.seconds
-  private val gridId = 1
+  private val maxWaitSeconds = 10.seconds
 
   private val fileIO = new FileIO
 
@@ -72,14 +71,14 @@ object BeadsSlickDB extends DAO_Interface {
     val grids = TableQuery[Grids]
     val gridJson: JsValue = fileIO.gridToJson(grid)
     val insertAction =
-      grids += Grid(gridId, gridJson)
+      grids += Grid(0, gridJson)
 
     Await.result(db.run(insertAction), 10.seconds)
   }
 
-  override def load(): Try[JsValue] = {
+  override def load(id: Int): Try[JsValue] = {
     val grids = TableQuery[Grids]
-    val query = grids.result.headOption
+    val query = grids.filter(_.id === id).result.headOption
 
     Try(Await.result(db.run(query), 10.seconds)) match {
       case Success(Some(grid)) => Success(grid.gridData)
@@ -88,13 +87,36 @@ object BeadsSlickDB extends DAO_Interface {
     }
   }
 
-  override def update(grid: GridInterface): Unit = {
+  override def loadAll(): Try[Seq[JsValue]] = {
+    val grids = TableQuery[Grids]
+    val query = grids.result
+
+    Try(Await.result(db.run(query), 10.second)) match {
+      case Success(gridSeq)   => Success(gridSeq.map(_.gridData))
+      case Failure(exception) => Failure(exception)
+    }
+  }
+
+  override def update(id: Int, grid: GridInterface): Try[JsValue] = {
     val grids = TableQuery[Grids]
     val gridJson: JsValue = fileIO.gridToJson(grid)
     val updateAction =
-      grids.filter(_.id === gridId).map(_.gridData).update(gridJson)
+      grids.filter(_.id === id).map(_.gridData).update(gridJson)
 
-    Await.result(db.run(updateAction), 10.seconds)
+    val query = grids.filter(_.id === id).result.headOption
+
+    Try(Await.result(db.run(query), 10.seconds)) match {
+      case Success(Some(grid)) => Success(grid.gridData)
+      case Success(None)       => Failure(new Exception("No grid found"))
+      case Failure(exception)  => Failure(exception)
+    }
+  }
+
+  override def delete(id: Int): Unit = {
+    val grids = TableQuery[Grids]
+    val deleteAction = grids.filter(_.id === id).delete
+
+    Await.result(db.run(deleteAction), 10.seconds)
   }
 
 }

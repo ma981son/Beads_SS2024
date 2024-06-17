@@ -40,5 +40,9 @@ trait ControllerInterface extends Observable {
 
   def save(): Unit
 
-  def load(): Unit
+  def load(id: Int): Unit
+
+  def loadAll(): Seq[JsValue]
+
+  def delete(id: Int): Unit
 }

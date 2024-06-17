@@ -15,7 +15,7 @@ class TuiSpec extends AnyWordSpec with Matchers {
     "processing an input size line" should {
 
       "on an valid input create a new grid" in {
-        val controller = new Controller(grid)
+        val controller = new Controller()
         val tui = new Tui(controller)
         val input = "5 5 square"
         val expectedGrid = new Grid(5, 5)
@@ -24,7 +24,7 @@ class TuiSpec extends AnyWordSpec with Matchers {
       }
 
       "don't change the grid on an invalid input" in {
-        val controller = new Controller(grid)
+        val controller = new Controller()
         val tui = new Tui(controller)
         val input = "pelusa"
         tui.processInputSizeLine(input)
@@ -35,7 +35,7 @@ class TuiSpec extends AnyWordSpec with Matchers {
     "processing an input line" should {
 
       "change the grid size when given command size and a valid input" in {
-        val controller = new Controller(grid)
+        val controller = new Controller()
         val tui = new Tui(controller)
         val input = "size 3 3"
         val expectedGrid = new Grid(3, 3)
@@ -44,7 +44,7 @@ class TuiSpec extends AnyWordSpec with Matchers {
       }
 
       "change a beads color when given a valid input" in {
-        val controller = new Controller(grid)
+        val controller = new Controller()
         val tui = new Tui(controller)
         val input = "0 0 red"
         val expectedGrid = grid.setBeadColor(0, 0, Color(1.0, 0.0, 0.0, 1.0))
@@ -55,7 +55,7 @@ class TuiSpec extends AnyWordSpec with Matchers {
       "create a new grid on command n" in {}
 
       "don't change the grid on an invalid input" in {
-        val controller = new Controller(grid)
+        val controller = new Controller()
         val tui = new Tui(controller)
         val input = "pelusa"
         tui.processInputLine(input)

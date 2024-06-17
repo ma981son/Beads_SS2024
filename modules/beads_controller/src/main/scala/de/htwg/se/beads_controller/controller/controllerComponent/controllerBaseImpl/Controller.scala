@@ -76,8 +76,14 @@ class Controller @Inject() () extends Observable with ControllerInterface {
     notifyObservers(Event.GRID)
   }
 
-  def load(): Unit = {
+  def load(id: Int): Unit = {
     grid = fileIo.load
     notifyObservers(Event.GRID)
   }
+
+  def loadAll(): Seq[JsValue] = {
+    Seq.empty[JsValue]
+  } // TODO Implement saving/loading multiple File in FileIO
+
+  def delete(id: Int): Unit = {}
 }

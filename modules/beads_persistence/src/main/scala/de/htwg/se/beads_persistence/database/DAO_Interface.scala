@@ -7,8 +7,11 @@ import scala.util.Try
 trait DAO_Interface {
   def save(grid: GridInterface): Unit
 
-  def load(): Try[JsValue]
+  def load(id: Int): Try[JsValue]
 
-  def update(grid: GridInterface): Unit
+  def loadAll(): Try[Seq[JsValue]]
 
+  def update(id: Int, grid: GridInterface): Try[JsValue]
+
+  def delete(id: Int): Unit
 }

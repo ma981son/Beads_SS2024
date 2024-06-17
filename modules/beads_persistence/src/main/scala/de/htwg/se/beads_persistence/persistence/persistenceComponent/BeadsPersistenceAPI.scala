@@ -49,15 +49,19 @@ class BeadsPersistenceAPI(
         }
       },
       get {
-        path("persistence" / Segment) { command =>
-          command match {
-            case "load" =>
-              dao.load() match {
-                case Success(grid) =>
-                  complete(status = 200, Json.prettyPrint(grid))
-                case Failure(exception) => complete(500, exception.getMessage())
-              }
-          }
+        path("persistence" / "load" / IntNumber) { id =>
+          dao.load(id) match
+            case Success(grid) => complete(status = 200, Json.prettyPrint(grid))
+            case Failure(exception) =>
+              complete(500, exception.getMessage())
+        }
+      },
+      get {
+        path("persistence" / "loadAll") {
+          dao.loadAll() match
+            case Success(grids) =>
+              complete(status = 200, Json.prettyPrint(Json.toJson(grids)))
+            case Failure(exception) => complete(500, exception.getMessage())
         }
       },
       post {
@@ -76,11 +80,11 @@ class BeadsPersistenceAPI(
         }
       },
       post {
-        path("persistence" / "update") {
+        path("persistence" / "update" / IntNumber) { id =>
           entity(as[String]) { updateRequest =>
             val json = Json.parse(updateRequest)
             val grid: GridInterface = fileIO.jsonToGrid(json)
-            dao.update(grid)
+            dao.update(id, grid)
             complete(
               HttpEntity(
                 ContentTypes.`application/json`,
@@ -88,6 +92,17 @@ class BeadsPersistenceAPI(
               )
             )
           }
+        }
+      },
+      delete {
+        path("persistence" / "delete" / IntNumber) { id =>
+          dao.delete(id)
+          complete(
+            HttpEntity(
+              ContentTypes.`application/json`,
+              s"""{"status": "Grid with id $id Deleted"}"""
+            )
+          )
         }
       }
     )
