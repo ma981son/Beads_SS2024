@@ -100,7 +100,7 @@ class BeadsPersistenceAPI(
           complete(
             HttpEntity(
               ContentTypes.`application/json`,
-              s"""{"status": "Grid with id $id Deleted"}"""
+              """{"status": "Grid was Deleted"}"""
             )
           )
         }
@@ -124,5 +124,4 @@ class BeadsPersistenceAPI(
   def stop(): Unit = {
     system.terminate()
   }
-
 }

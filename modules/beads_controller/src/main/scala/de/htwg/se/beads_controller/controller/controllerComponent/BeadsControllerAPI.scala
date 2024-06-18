@@ -70,7 +70,7 @@ class BeadsControllerAPI(using controller: ControllerInterface) {
               controller.redo()
               completeWithData(Json.prettyPrint(controller.gridToJson))
             case "save" =>
-              save match {
+              saveGrid match {
                 case Success(_) =>
                   completeWithData("success")
                 case Failure(exception) =>
@@ -78,7 +78,7 @@ class BeadsControllerAPI(using controller: ControllerInterface) {
                   failWith(exception)
               }
             case "loadAll" =>
-              loadAll() match {
+              loadAllGrids() match {
                 case Success(seqJson) =>
                   complete(
                     HttpEntity(
@@ -95,7 +95,7 @@ class BeadsControllerAPI(using controller: ControllerInterface) {
       },
       get {
         path("controller" / "load" / IntNumber) { id =>
-          load(id) match {
+          loadGrid(id) match {
             case Success(json) =>
               controller.grid = fileIO.jsonToGrid(json)
               completeWithData(Json.prettyPrint(controller.gridToJson))
@@ -165,6 +165,16 @@ class BeadsControllerAPI(using controller: ControllerInterface) {
             }
           }
         }
+      },
+      delete {
+        path("controller" / "delete" / IntNumber) { id =>
+          deleteGrid(id) match {
+            case Success(_) => completeWithData("success")
+            case Failure(exception) =>
+              println(s"Request failed: ${exception}")
+              failWith(exception)
+          }
+        }
       }
     )
 
@@ -177,7 +187,7 @@ class BeadsControllerAPI(using controller: ControllerInterface) {
     )
   }
 
-  private def save: Try[Unit] = {
+  private def saveGrid: Try[Unit] = {
     val saveRequest = Http().singleRequest(
       HttpRequest(
         uri = s"$persistenceServiceEndpoint/save",
@@ -201,7 +211,7 @@ class BeadsControllerAPI(using controller: ControllerInterface) {
     }.map(_ => ())
   }
 
-  def load(id: Int): Try[JsValue] = {
+  def loadGrid(id: Int): Try[JsValue] = {
     val loadRequest = Http().singleRequest(
       HttpRequest(
         uri = s"$persistenceServiceEndpoint/load/$id",
@@ -221,7 +231,7 @@ class BeadsControllerAPI(using controller: ControllerInterface) {
     }
   }
 
-  private def loadAll(): Try[Seq[JsValue]] = {
+  private def loadAllGrids(): Try[Seq[JsValue]] = {
     val loadAllRequest = Http().singleRequest(
       HttpRequest(
         uri = s"$persistenceServiceEndpoint/loadAll",
@@ -239,6 +249,26 @@ class BeadsControllerAPI(using controller: ControllerInterface) {
       )
       Await.result(responseJsonFuture, 10.seconds)
     }
+  }
+
+  private def deleteGrid(id: Int): Try[Unit] = {
+    val deleteRequest = Http().singleRequest(
+      HttpRequest(
+        uri = s"$persistenceServiceEndpoint/delete/$id",
+        method = HttpMethods.DELETE
+      )
+    )
+    val responseJsonFuture = deleteRequest.flatMap { response =>
+      Unmarshal(response.entity).to[String].map { jsonString =>
+        Json.parse(jsonString)
+      }
+    }
+    Try {
+      println(
+        s"Sending request to $persistenceServiceEndpoint/delete"
+      )
+      Await.result(responseJsonFuture, 10.seconds)
+    }.map(_ => ())
   }
 
   def start(): Unit = {

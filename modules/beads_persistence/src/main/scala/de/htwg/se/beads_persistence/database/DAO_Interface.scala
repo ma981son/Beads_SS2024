@@ -5,13 +5,13 @@ import play.api.libs.json.JsValue
 import scala.util.Try
 
 trait DAO_Interface {
-  def save(grid: GridInterface): Unit
+  def save(grid: GridInterface): Try[Unit]
 
   def load(id: Int): Try[JsValue]
 
-  def loadAll(): Try[Seq[JsValue]]
+  def loadAll(): Try[Seq[(Int, JsValue)]]
 
   def update(id: Int, grid: GridInterface): Try[JsValue]
 
-  def delete(id: Int): Unit
+  def delete(id: Int): Try[Unit]
 }

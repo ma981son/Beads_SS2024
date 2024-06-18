@@ -281,7 +281,7 @@ class RestController @Inject() (
     httpService.request(
       restControllerUrl,
       s"delete/$id",
-      HttpMethods.GET
+      HttpMethods.DELETE
     )
   }
 }

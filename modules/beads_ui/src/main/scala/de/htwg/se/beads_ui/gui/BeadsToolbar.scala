@@ -39,10 +39,13 @@ class BeadsToolbar(controller: ControllerInterface) extends VBox with Observer {
       image = new Image(
         getClass
           .getResource(
-            ("/assets/icons/undo_FILL0_wght500_GRAD0_opsz24.png")
+            ("/assets/icons/undo_24dp_FILL0_wght500_GRAD0_opsz24.png")
           )
           .toString()
-      )
+      ) {
+        fitWidth = 24
+        fitHeight = 24
+      }
     }
 
     tooltip = new Tooltip("Undo")
@@ -59,10 +62,13 @@ class BeadsToolbar(controller: ControllerInterface) extends VBox with Observer {
       image = new Image(
         getClass
           .getResource(
-            ("/assets/icons/redo_FILL0_wght500_GRAD0_opsz24.png")
+            ("/assets/icons/redo_24dp_FILL0_wght500_GRAD0_opsz24.png")
           )
           .toString()
-      )
+      ) {
+        fitWidth = 24
+        fitHeight = 24
+      }
     }
 
     tooltip = new Tooltip("Redo")
@@ -80,10 +86,13 @@ class BeadsToolbar(controller: ControllerInterface) extends VBox with Observer {
       image = new Image(
         getClass
           .getResource(
-            ("/assets/icons/save_FILL0_wght500_GRAD0_opsz24.png")
+            ("/assets/icons/save_24dp_FILL0_wght500_GRAD0_opsz24.png")
           )
           .toString()
-      )
+      ) {
+        fitWidth = 24
+        fitHeight = 24
+      }
     }
 
     tooltip = new Tooltip("Save")
@@ -100,17 +109,21 @@ class BeadsToolbar(controller: ControllerInterface) extends VBox with Observer {
       image = new Image(
         getClass
           .getResource(
-            ("/assets/icons/download_FILL0_wght500_GRAD0_opsz24.png")
+            ("/assets/icons/bookmarks_24dp_FILL0_wght500_GRAD0_opsz24.png")
           )
           .toString()
-      )
+      ) {
+        fitWidth = 24
+        fitHeight = 24
+      }
     }
 
     tooltip = new Tooltip("Load")
 
     onMouseClicked = (event: MouseEvent) => {
-      // new BeadsSavedGridsStage(controller) TODO: Add selection to save multiple Grids
-      controller.load(1)
+      new BeadsSavedGridsStage(
+        controller
+      ).show()
     }
   }
 
@@ -122,10 +135,13 @@ class BeadsToolbar(controller: ControllerInterface) extends VBox with Observer {
       image = new Image(
         getClass
           .getResource(
-            ("/assets/icons/format_color_fill_FILL0_wght500_GRAD0_opsz24.png")
+            ("/assets/icons/format_color_fill_24dp_FILL0_wght500_GRAD0_opsz24.png")
           )
           .toString()
-      )
+      ) {
+        fitWidth = 24
+        fitHeight = 24
+      }
     }
 
     tooltip = new Tooltip("Fill Grid")
@@ -181,10 +197,13 @@ class BeadsToolbar(controller: ControllerInterface) extends VBox with Observer {
       image = new Image(
         getClass
           .getResource(
-            ("/assets/icons/resize_FILL0_wght500_GRAD0_opsz24.png")
+            ("/assets/icons/resize_24dp_FILL0_wght500_GRAD0_opsz24.png")
           )
           .toString()
-      )
+      ) {
+        fitWidth = 24
+        fitHeight = 24
+      }
     }
 
     tooltip = new Tooltip("Resize Template")
@@ -210,10 +229,13 @@ class BeadsToolbar(controller: ControllerInterface) extends VBox with Observer {
       image = new Image(
         getClass
           .getResource(
-            ("/assets/icons/add_box_FILL0_wght500_GRAD0_opsz24.png")
+            ("/assets/icons/add_box_24dp_FILL0_wght500_GRAD0_opsz24.png")
           )
           .toString()
-      )
+      ) {
+        fitWidth = 24
+        fitHeight = 24
+      }
     }
 
     tooltip = new Tooltip("Create new Template")

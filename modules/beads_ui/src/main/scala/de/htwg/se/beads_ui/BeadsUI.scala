@@ -10,13 +10,14 @@ import scala.io.StdIn.readLine
 import scalafx.application.JFXApp3
 import scala.io.AnsiColor._
 import scalafx.application.Platform
-import scalafx.scene.image.Image
 import com.google.inject.Guice
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import scala.concurrent.ExecutionContext
 import de.htwg.se.beads_controller.controller.BeadsControllerAPIModule
 import de.htwg.se.beads_util.Enums.Event
+import scalafx.Includes._
+import scalafx.scene.image.Image
 
 class BeadsUI(using controller: ControllerInterface) extends JFXApp3 {
 
@@ -28,7 +29,7 @@ class BeadsUI(using controller: ControllerInterface) extends JFXApp3 {
       icons += new Image(
         getClass
           .getResource(
-            "/assets/icons/filter_vintage_FILL0_wght500_GRAD0_opsz24.png"
+            "/assets/icons/filter_vintage_24dp_FILL0_wght500_GRAD0_opsz24.png"
           )
           .toString()
       )

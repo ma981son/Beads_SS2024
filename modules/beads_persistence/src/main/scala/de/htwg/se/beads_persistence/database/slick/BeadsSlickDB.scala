@@ -67,13 +67,13 @@ object BeadsSlickDB extends DAO_Interface {
       }
     }
 
-  override def save(grid: GridInterface): Unit = {
+  override def save(grid: GridInterface): Try[Unit] = {
     val grids = TableQuery[Grids]
     val gridJson: JsValue = fileIO.gridToJson(grid)
     val insertAction =
       grids += Grid(0, gridJson)
 
-    Await.result(db.run(insertAction), 10.seconds)
+    Try[Unit] { Await.result(db.run(insertAction), 10.seconds) }
   }
 
   override def load(id: Int): Try[JsValue] = {
@@ -87,12 +87,13 @@ object BeadsSlickDB extends DAO_Interface {
     }
   }
 
-  override def loadAll(): Try[Seq[JsValue]] = {
+  override def loadAll(): Try[Seq[(Int, JsValue)]] = {
     val grids = TableQuery[Grids]
     val query = grids.result
 
     Try(Await.result(db.run(query), 10.second)) match {
-      case Success(gridSeq)   => Success(gridSeq.map(_.gridData))
+      case Success(gridSeq) =>
+        Success(gridSeq.map(grid => (grid._1, grid._2)))
       case Failure(exception) => Failure(exception)
     }
   }
@@ -112,11 +113,11 @@ object BeadsSlickDB extends DAO_Interface {
     }
   }
 
-  override def delete(id: Int): Unit = {
+  override def delete(id: Int): Try[Unit] = {
     val grids = TableQuery[Grids]
     val deleteAction = grids.filter(_.id === id).delete
 
-    Await.result(db.run(deleteAction), 10.seconds)
+    Try[Unit] { Await.result(db.run(deleteAction), 10.seconds) }
   }
 
 }
