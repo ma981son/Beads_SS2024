@@ -22,7 +22,7 @@ import scala.util.Success
 object BeadsMongoDB extends DAO_Interface {
 
   private val connectionRetryAttempts = 5
-  private val maxWaitSeconds = 30.seconds
+  private val maxWaitSeconds = 10.seconds
 
   private val fileIO = new FileIO
 
