@@ -46,8 +46,12 @@ object BeadsMongoDB extends DAO_Interface {
     }
   }
 
+  private var idCounter: Int = 0
+
   override def save(grid: GridInterface): Try[Unit] = {
+    idCounter += 1
     val document = Document(
+      "_id" -> idCounter,
       "gridData" -> fileIO.gridToJson(grid).toString
     )
 
