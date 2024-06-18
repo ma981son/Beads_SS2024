@@ -108,6 +108,10 @@ lazy val persistence = project
   .enablePlugins(DockerCompose, JavaAppPackaging)
   .settings(
     name := "Beads_Persistence",
+    libraryDependencies ++= Seq(
+      ("org.mongodb.scala" %% "mongo-scala-driver" % "5.1.0")
+        .cross(CrossVersion.for3Use2_13)
+    ),
     commonSettings,
     dockerBaseImage := "hseeberger/scala-sbt:17.0.2_1.6.2_3.1.1",
     Compile / mainClass := Some(

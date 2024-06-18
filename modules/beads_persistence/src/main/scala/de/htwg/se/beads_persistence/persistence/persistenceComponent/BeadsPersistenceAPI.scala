@@ -31,8 +31,8 @@ import de.htwg.se.beads_persistence.database.slick.tables.Grid
 import de.htwg.se.beads.model.fileIOComponent.fileIoJsonImpl.FileIO
 import de.htwg.se.beads.model.gridComponent.GridInterface
 
-class BeadsPersistenceAPI(
-    dao: DAO_Interface = BeadsSlickDB
+class BeadsPersistenceAPI(using
+    dao: DAO_Interface
 ) {
 
   implicit val system: ActorSystem[Nothing] =
@@ -50,18 +50,20 @@ class BeadsPersistenceAPI(
       },
       get {
         path("persistence" / "load" / IntNumber) { id =>
-          dao.load(id) match
+          dao.load(id) match {
             case Success(grid) => complete(status = 200, Json.prettyPrint(grid))
             case Failure(exception) =>
               complete(500, exception.getMessage())
+          }
         }
       },
       get {
         path("persistence" / "loadAll") {
-          dao.loadAll() match
+          dao.loadAll() match {
             case Success(grids) =>
               complete(status = 200, Json.prettyPrint(Json.toJson(grids)))
             case Failure(exception) => complete(500, exception.getMessage())
+          }
         }
       },
       post {
