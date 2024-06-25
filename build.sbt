@@ -7,6 +7,9 @@ import com.typesafe.sbt.packager.docker.DockerPlugin.autoImport._
 val scala3Version = "3.4.1"
 val AkkaVersion = "2.9.0-M2"
 val AkkaHttpVersion = "10.6.0-M1"
+val slickVersion = "3.5.1"
+val mongoDbVersion = "5.1.0"
+val gatlingVersion = "3.11.3"
 
 lazy val commonSettings = Seq(
   version := "0.1.0-SNAPSHOT",
@@ -14,16 +17,18 @@ lazy val commonSettings = Seq(
   libraryDependencies ++= Seq(
     "org.scalatest" %% "scalatest" % "3.2.10" % Test,
     "org.scalafx" %% "scalafx" % "20.0.0-R31",
-    "org.scala-lang.modules" %% "scala-swing" % "3.0.0",
+    ("org.scala-lang.modules" %% "scala-swing" % "3.0.0")
+      .cross(CrossVersion.for3Use2_13),
     "net.codingwell" %% "scala-guice" % "7.0.0",
     "org.playframework" %% "play-json" % "3.0.2",
-    "com.typesafe.akka" %% "akka-actor-typed" % AkkaVersion,
-    "com.typesafe.akka" %% "akka-stream" % AkkaVersion,
-    "com.typesafe.akka" %% "akka-http" % AkkaHttpVersion,
-    "com.typesafe.akka" %% "akka-http-spray-json" % AkkaHttpVersion,
-    "com.typesafe.slick" %% "slick" % "3.5.1",
-    "com.typesafe.slick" %% "slick-hikaricp" % "3.5.1",
-    "org.postgresql" % "postgresql" % "42.2.20"
+    ("com.typesafe.akka" %% "akka-actor-typed" % AkkaVersion)
+      .cross(CrossVersion.for3Use2_13),
+    ("com.typesafe.akka" %% "akka-stream" % AkkaVersion)
+      .cross(CrossVersion.for3Use2_13),
+    ("com.typesafe.akka" %% "akka-http" % AkkaHttpVersion)
+      .cross(CrossVersion.for3Use2_13),
+    ("com.typesafe.akka" %% "akka-http-spray-json" % AkkaHttpVersion)
+      .cross(CrossVersion.for3Use2_13)
   )
 )
 
@@ -63,16 +68,25 @@ lazy val beads = project
 
 lazy val controller = project
   .in(file("./modules/beads_controller"))
-  .enablePlugins(DockerPlugin, JavaAppPackaging)
+  .enablePlugins(DockerPlugin, JavaAppPackaging, GatlingPlugin)
   .settings(
     name := "Beads_Controller",
+    libraryDependencies ++= Seq(
+      "com.typesafe.slick" %% "slick" % slickVersion,
+      "com.typesafe.slick" %% "slick-hikaricp" % slickVersion,
+      ("org.mongodb.scala" %% "mongo-scala-driver" % mongoDbVersion)
+        .cross(CrossVersion.for3Use2_13),
+      "io.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersion % "test",
+      "io.gatling" % "gatling-test-framework" % gatlingVersion % "test"
+    ),
     commonSettings,
     dockerBaseImage := "hseeberger/scala-sbt:17.0.2_1.6.2_3.1.1",
     Compile / mainClass := Some(
       "de.htwg.se.beads_controller.Beads_Controller_Main"
     ),
     dockerExposedPorts := Seq(3000),
-    dockerSettings
+    dockerSettings,
+    inConfig(Gatling)(Defaults.testSettings)
   )
   .dependsOn(beads % "compile->compile", util % "compile->compile")
 
@@ -105,12 +119,17 @@ lazy val util = project
 
 lazy val persistence = project
   .in(file("./modules/beads_persistence"))
-  .enablePlugins(DockerCompose, JavaAppPackaging)
+  .enablePlugins(DockerCompose, JavaAppPackaging, GatlingPlugin)
   .settings(
     name := "Beads_Persistence",
     libraryDependencies ++= Seq(
-      ("org.mongodb.scala" %% "mongo-scala-driver" % "5.1.0")
-        .cross(CrossVersion.for3Use2_13)
+      "com.typesafe.slick" %% "slick" % slickVersion,
+      "com.typesafe.slick" %% "slick-hikaricp" % slickVersion,
+      "org.postgresql" % "postgresql" % "42.2.20",
+      ("org.mongodb.scala" %% "mongo-scala-driver" % mongoDbVersion)
+        .cross(CrossVersion.for3Use2_13),
+      "io.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersion % "test",
+      "io.gatling" % "gatling-test-framework" % gatlingVersion % "test"
     ),
     commonSettings,
     dockerBaseImage := "hseeberger/scala-sbt:17.0.2_1.6.2_3.1.1",
@@ -118,6 +137,7 @@ lazy val persistence = project
       "de.htwg.se.beads_persistence.Beads_Persistence_Main"
     ),
     dockerExposedPorts := Seq(3001),
-    dockerSettings
+    dockerSettings,
+    inConfig(Gatling)(Defaults.testSettings)
   )
   .dependsOn(beads % "compile->compile")
